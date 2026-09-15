@@ -1,26 +1,156 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Site canvas — moved off flat white (2026-09-14, per Vignesh, relaying
+     meeting feedback, revised twice the same day). First pass warmed it to
+     a near-white ivory, second pass to a soft blush — both still read as
+     "basically white" once the per-section gradient glows faded out lower
+     down each page, which is exactly what Vignesh flagged next ("each page
+     its white... light but visible colour"). This third pass makes the
+     base itself a clearly-coloured warm peach/blush rather than relying on
+     glows to carry the colour, so every page reads as tinted top to bottom,
+     not just near its hero. Still light enough for body copy and white
+     cards/badges to read cleanly on top. */
+  --background: #f9ddd6;
+  --foreground: #1a1a1a;
+
+  /* Brand colours (locked): red/orange accent + near-black */
+  --brand: #ff3131;
+  --brand-dark: #1a1a1a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Body-copy text bumped up site-wide (2026-09-15, per Vignesh: "the font is
+   too small... make it properly visible"). Rather than hunt down every
+   text-sm/text-base/text-lg className across every page (dozens of files),
+   this overrides Tailwind's own size tokens directly, so every existing
+   text-* utility everywhere on the site (services, company, people,
+   announcements, contact, home, chatbot, admin) picks up the bigger size
+   automatically with no per-page changes needed. Only xs through xl move
+   (the sizes actually used for body copy, labels, and lead paragraphs) —
+   2xl and up are already big headings and weren't part of the complaint,
+   so they're left at Tailwind's defaults to keep the heading/body size
+   relationship from getting out of proportion. Line-height tokens are
+   unitless ratios (e.g. 1.5), not tied to the old pixel size, so they carry
+   over correctly as-is and don't need touching. Tailwind's spacing scale
+   (padding/margin/gap) is a separate token namespace from font-size, so
+   this only affects text — layouts, cards, and icon sizes are untouched. */
+@theme {
+  --text-xs: 0.8125rem;   /* 13px, was 12px */
+  --text-sm: 0.9375rem;   /* 15px, was 14px — most body copy uses this */
+  --text-base: 1.0625rem; /* 17px, was 16px */
+  --text-lg: 1.1875rem;   /* 19px, was 18px */
+  --text-xl: 1.3125rem;   /* 21px, was 20px */
+}
+
+/* Conservative/static brand direction — no auto dark-mode switch.
+   Watermark (2026-09-14, per Vignesh) is the real Transpeed "7" mark
+   (public/images/logo/transpeed-logo.png), pre-composited into a generously
+   spaced repeating tile (transpeed-watermark-tile.png) rather than faded
+   via CSS opacity — baking the alpha into the tile itself avoids any change
+   to how opaque the site's actual white cards/sections look, and keeps the
+   mark crisp instead of the whole tile washing out unevenly. Tile alpha
+   bumped 9% -> 16% the same day the base colour was deepened, since the
+   mark all but disappeared once it sat on the more saturated peach instead
+   of the original near-white. Painted straight onto body as a second
+   background layer, so every page picks it up with no per-page markup
+   changes — it only becomes invisible where a section explicitly sets its
+   own solid background (e.g. the dark hero, the zinc-dark footer), which is
+   the correct behaviour there. */
+body {
+  background-color: var(--background);
+  background-image: url("/images/logo/transpeed-watermark-tile.png");
+  background-repeat: repeat;
+  background-size: 260px 260px;
+  color: var(--foreground);
+}
+
+/* Hero background texture — a faint route/graticule grid that fades toward
+   the edges, used behind the dark hero section. Pure CSS, no image asset. */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 20%, black 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 20%, black 35%, transparent 100%);
+}
+
+/* Same graticule technique, reused for the Company page's global network
+   map (2026-09-14, per Vignesh: "add one more map which shows the global
+   level map with there locations pointed"). No radial fade this time —
+   the map card has its own hard edges, and a full-bleed grid reads better
+   against the animated dots/arcs on top of it. */
+.map-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* Radar-ping pulse for the global network map's location dots — a soft
+   glow ring that expands and fades, repeating. transform-box: fill-box is
+   what makes an SVG circle scale from its own center instead of the whole
+   SVG viewport's origin (the default, and wrong, behaviour for transforms
+   on SVG shapes). */
+@keyframes map-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
   }
 }
+.map-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: map-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Leaflet's own zoom/attribution controls (Company page's "Our Offices"
+   map) — restyled globally since that markup is generated by the library
+   itself, not reachable by Tailwind classes on our JSX. Rounded, brand-
+   tinted on hover, and a softer attribution chip instead of Leaflet's flat
+   default squares (2026-09-15, per Vignesh: "make the offices map look
+   good too"). */
+.leaflet-control-zoom {
+  border: none !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.3) !important;
+}
+.leaflet-control-zoom a {
+  background-color: #fff !important;
+  color: var(--brand-dark) !important;
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  border: none !important;
+  transition: background-color 0.15s, color 0.15s;
+}
+.leaflet-control-zoom a:hover {
+  background-color: var(--brand) !important;
+  color: #fff !important;
+}
+.leaflet-control-zoom-in {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+.leaflet-control-attribution {
+  border-radius: 0.5rem !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(2px);
+  font-size: 10px !important;
+  padding: 2px 8px !important;
 }

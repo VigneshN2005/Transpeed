@@ -39,3 +39,33 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Added 2026-09-15, per Vignesh asking "is the current folder nice?" before
+# pushing to GitHub. Two real problems found sitting in C:\transpeed:
+# 1. "Claude outputs/" is a scratch/staging folder from earlier sessions —
+#    old SQL migration drafts, duplicate component copies, unused logo
+#    images. Harmless clutter EXCEPT for one file inside it:
+#    "Claude outputs/env.local" (no leading dot, so the ".env*" rule above
+#    does NOT catch it) holds a live RESEND_API_KEY plus the Supabase URL/
+#    anon key in plain text. Without this line, that real secret would have
+#    been committed and pushed to GitHub history the moment this folder
+#    was added. Ignoring it here stops that; deleting the folder from disk
+#    entirely (once device_bash is available again, or by hand in File
+#    Explorer) is still the right long-term cleanup.
+# 2. The client's raw working documents (Word docs, the architecture
+#    pptx) aren't part of the website and don't belong in a code repo —
+#    one of them ("Chat Bot.docx") has an open, unresolved question about
+#    whether its content is meant to be confidential, which is reason
+#    enough on its own to keep these out of git history rather than decide
+#    that question by accident.
+Claude outputs/
+*.docx
+*.pptx
+
+# CLAUDE.md / AGENTS.md — AI-assistant convention files (AGENTS.md is
+# actually auto-written by `next dev` itself per its own comment; CLAUDE.md
+# just points to it). Content's harmless either way, but the filenames
+# alone are the kind of thing that shouldn't show up in the pushed repo
+# (2026-09-15, per Vignesh: "it shouldn't be like the claude built it").
+CLAUDE.md
+AGENTS.md
