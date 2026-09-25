@@ -4,7 +4,12 @@ export interface Service {
   tagline: string;
   shortDescription: string;
   description: string;
-  steps?: { title: string; text: string }[];
+  // `icon` added per-step (2026-09-25, per Vignesh: the "See the full
+  // 6-step process" diagram was plain black-and-white line art baked into
+  // one flattened image he couldn't restyle — replaced with 6 separate
+  // colorful brand-palette icons, one per step, laid out with real arrow
+  // connectors in code instead.
+  steps?: { title: string; text: string; icon?: string }[];
   /** DSV-style line-art icon representing the service (public/images/services/) */
   icon?: string;
   /** Optional wider process/flow image (currently only Sourcing & Procurement has one) */
@@ -13,6 +18,20 @@ export interface Service {
    * Vignesh: "in the second page they wanted image for each services") —
    * separate from `icon`, which stays the small line-art tile. */
   photo?: string;
+  /** Top-banner photo for the home page's "Our Services" punch-card grid
+   * only (2026-09-21, per Vignesh, after the home grid's `photo` reuse
+   * accidentally also changed the Services page: "why did u change in the
+   * service page too? i wanted u to change only in the home page service
+   * punch card"). Deliberately separate from `photo` so the two pages can
+   * carry entirely different images. Falls back to `photo` on the home
+   * grid until every service has its own dedicated one. */
+  cardPhoto?: string;
+  /** Optional second photo shown alongside `photo` on the Services page
+   * (2026-09-21, per Vignesh, for Warehousing and Distribution: "along
+   * with the image that is already there ... can u add the image asked
+   * too"). Only services with a second photo render the two-up layout —
+   * everyone else keeps the single-image layout. */
+  secondPhoto?: string;
 }
 
 export interface ExperienceEntry {

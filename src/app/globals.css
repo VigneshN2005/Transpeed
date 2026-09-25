@@ -24,9 +24,23 @@
   --color-foreground: var(--foreground);
   --color-brand: var(--brand);
   --color-brand-dark: var(--brand-dark);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-display);
+
+  /* Site-wide font switched to Segoe UI (2026-09-21, per Vignesh: "change
+     the entire company's website's font to Segoe UI"). Applies everywhere —
+     sans is Tailwind's default body/UI font, and display (previously the
+     Oswald accent face used on hero-scale headings) now matches it, so
+     there's a single consistent typeface across the whole site rather than
+     a display/body split. Segoe UI itself only ships on Windows, so the
+     stack falls through to each OS's closest native equivalent (San
+     Francisco on macOS/iOS via -apple-system, Roboto on Android/Chrome OS,
+     the OS default via system-ui elsewhere) rather than a webfont — no
+     Google Font is loaded for this anymore, see layout.tsx. */
+  --font-sans: "Segoe UI", system-ui, -apple-system, "Segoe UI Emoji", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-display: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica,
+    Arial, sans-serif;
 }
 
 /* Body-copy text bumped up site-wide (2026-09-15, per Vignesh: "the font is
@@ -132,8 +146,8 @@ body {
   box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.3) !important;
 }
 .leaflet-control-zoom a {
-  background-color: #fff !important;
-  color: var(--brand-dark) !important;
+  background-color: var(--brand) !important;
+  color: #fff !important;
   width: 34px !important;
   height: 34px !important;
   line-height: 34px !important;
@@ -141,11 +155,11 @@ body {
   transition: background-color 0.15s, color 0.15s;
 }
 .leaflet-control-zoom a:hover {
-  background-color: var(--brand) !important;
+  background-color: var(--brand-dark) !important;
   color: #fff !important;
 }
-.leaflet-control-zoom-in {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+.leaflet-control-zoom a.leaflet-control-zoom-in {
+  border-bottom: 2px solid var(--brand-dark) !important;
 }
 .leaflet-control-attribution {
   border-radius: 0.5rem !important;

@@ -1,11 +1,14 @@
 import type { ClientLogo } from "@/types";
 
-// Rossel, Instaworks Pvt Ltd, and LTTS are the confirmed new additions from
-// Gokul's requirements doc. Rossel's real registered name/logo is "Rossell
-// Techsys (Division of Rossell India Ltd)" — corrected below now that the
-// logo arrived. LTTS' logo is the parent L&T corporate mark (same as L&T
-// Construction's logo below — both are Larsen & Toubro group companies).
-// Instaworks Pvt Ltd still has no confirmed logo — see note to Vignesh.
+// Rossel and LTTS are confirmed new additions from Gokul's requirements
+// doc. Rossel's real registered name/logo is "Rossell Techsys (Division of
+// Rossell India Ltd)" — corrected below now that the logo arrived. LTTS'
+// logo is the parent L&T corporate mark (same as L&T Construction's logo
+// below — both are Larsen & Toubro group companies). Instaworks Pvt Ltd
+// (2026-09-25, per Vignesh: "remove instaworks in our clients") has been
+// removed entirely — it never had a confirmed logo (a web search only
+// turned up an unrelated, defunct company of the same name), and Vignesh
+// has now dropped it as a client rather than waiting on Gokul for one.
 // C6 Logistic Networks' logo arrived separately in the shared "logo" folder.
 // The 8 entries below (Tata Power through BGR Energy) are real client logos
 // pulled directly from the current live transpeedlogistics.com site's "Our
@@ -17,7 +20,6 @@ import type { ClientLogo } from "@/types";
 export const clients: ClientLogo[] = [
   { name: "C6 Logistic Networks", logo: "/images/clients/c6-logistic-networks.jpg" },
   { name: "Rossell Techsys", logo: "/images/clients/rossell-techsys.jpg" },
-  { name: "Instaworks Pvt Ltd" },
   { name: "LTTS", logo: "/images/clients/ltts.png" },
   { name: "Tata Power", logo: "/images/clients/tata-power.png" },
   { name: "Phalada Pure & Sure", logo: "/images/clients/phalada-pure-and-sure.jpg" },

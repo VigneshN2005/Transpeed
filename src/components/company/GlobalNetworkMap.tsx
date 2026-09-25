@@ -37,6 +37,21 @@ import Image from "next/image";
 //     Europe is small — so a couple of labels sit noticeably off their dot
 //     (Germany, the hub) to clear the traffic converging on Bangalore;
 //     that's intentional, verified against the render, not a leftover bug.
+//
+//   2026-09-21 — 9 more overseas points added (Far East, Central Asia,
+//     South Asia, South West Asia, Africa, Norway, Sweden, Denmark,
+//     Austria), coordinates marked by Vignesh via a rebuilt version of the
+//     same click-to-get-coordinates tool. Label offsets for these 9 came
+//     from the same collision-search approach as the original 6 (candidate
+//     offsets on rings 38-68 viewBox units out, greedy-picking whichever
+//     clears every arc, dot, and already-placed label by the widest
+//     margin), then checked against an actual render before writing this
+//     file. Two notes: "South Asia"'s marked point sits only ~22 units from
+//     the India hub dot itself (India being in South Asia, that's
+//     geographically expected, not a misclick) — its arc is correspondingly
+//     tiny but still reads cleanly in the render. "Middle East" was on the
+//     original list of additions but no coordinate was given for it, so
+//     it's not in POINTS below yet — add it the same way once marked.
 const WIDTH = 1000;
 const HEIGHT = 500;
 
@@ -64,6 +79,15 @@ const POINTS: {
   { name: "Europe", x: 479.9, y: 112.2, labelDx: 0, labelDy: -65 },
   { name: "Italy", x: 489.5, y: 148.3, labelDx: 22.2, labelDy: 61.1 },
   { name: "Singapore", x: 770.6, y: 284.7, labelDx: 0, labelDy: 65 },
+  { name: "Far East", x: 825.4, y: 195.7, labelDx: 0, labelDy: -68 },
+  { name: "Central Asia", x: 633.9, y: 154.3, labelDx: 43.7, labelDy: -52.1 },
+  { name: "South Asia", x: 680.7, y: 216.4, labelDx: 34.0, labelDy: -58.9 },
+  { name: "South West Asia", x: 591.2, y: 205.3, labelDx: -58.9, labelDy: 34.0 },
+  { name: "Africa", x: 560.9, y: 307.3, labelDx: 0, labelDy: 68 },
+  { name: "Norway", x: 479.5, y: 85.4, labelDx: -67.0, labelDy: -11.8 },
+  { name: "Sweden", x: 498.8, y: 71.7, labelDx: 58.9, labelDy: -34.0 },
+  { name: "Denmark", x: 479.5, y: 99.2, labelDx: -45.0, labelDy: 0 },
+  { name: "Austria", x: 471.3, y: 136.4, labelDx: 15.4, labelDy: 42.3 },
 ];
 
 // Quadratic arc bowed upward between two points — the "gold flight path"

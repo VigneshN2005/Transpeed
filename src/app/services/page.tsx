@@ -12,14 +12,14 @@ export const metadata = {
 export default function ServicesPage() {
   return (
     <>
-      {/* Real headline carried over from Transpeed's own previous site
-          ("Global and Domestic Supply Chain Solutions"), given the same
-          dark glow/grid treatment as the homepage hero for a consistent
-          brand feel across pages instead of the old flat gray banner. */}
+      {/* Headline/description updated (2026-09-21, per Vignesh) from the
+          original "Global and Domestic Supply Chain Solutions" carried
+          over from Transpeed's previous site, to the new brand line. Same
+          dark glow/grid treatment as the homepage hero either way. */}
       <PageHero
         eyebrow="Transpeed Logistics"
-        title="Global and Domestic Supply Chain Solutions"
-        description="Six services, one coordinated logistics partner, each handled end-to-end by our own team."
+        title="END TO END SUPPLY CHAIN SOLUTIONS"
+        description="You don't need five vendors to move your business forward. You need one partner who gets it right, on schedule, at the right price, every time."
       >
         <nav aria-label="Jump to a service" className="mt-8 flex flex-wrap gap-2">
           {services.map((service, i) => (
@@ -63,39 +63,93 @@ export default function ServicesPage() {
               return (
                 <Reveal key={service.slug} delay={Math.min(i * 40, 200)}>
                   <article id={service.slug} className="scroll-mt-28">
-                    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-                      <Reveal
-                        variant="image"
-                        className={`relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)] ring-1 ring-black/5 ${
-                          reversed ? "lg:order-2" : ""
-                        }`}
-                      >
-                        {service.photo ? (
-                          <Image
-                            src={service.photo}
-                            alt={`${service.name} — Transpeed Logistics`}
-                            fill
-                            sizes="(min-width: 1024px) 40rem, 100vw"
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-brand/5">
-                            {service.icon && (
+                    {/* items-start (2026-09-25, per Vignesh: "the image
+                        should be beside the content") — was items-center,
+                        which vertically centered the short photo against
+                        the whole text+diagram+step-cards block once that
+                        block grew much taller than the photo, so the photo
+                        drifted down away from the title/description it's
+                        meant to sit beside. items-start keeps it pinned to
+                        the top, beside the title, regardless of how tall
+                        the expanded step content gets below it. */}
+                    <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+                      {/* secondPhoto (2026-09-21, per Vignesh, for
+                          Warehousing and Distribution: "along with the
+                          image that is already there ... can u add the
+                          image asked too"). Only this service has one so
+                          far — everyone else keeps the original single
+                          full-width photo untouched below. */}
+                      {service.secondPhoto ? (
+                        // (2026-09-21, per Vignesh: "add an arrow or
+                        // something" → "remove arrow, make it somehow look
+                        // better" → "nah it doesn't look good, align them
+                        // in a better way" → "noooo better make the image 1
+                        // look first, then 2nd image beside it"). Back to
+                        // side by side per this last instruction, but not
+                        // the original equal 50/50 split — the main photo
+                        // ("image 1") leads at roughly 3/5 width, the
+                        // loading-dock shot sits beside it narrower at 2/5,
+                        // so there's a clear primary/secondary read instead
+                        // of two identical flat halves.
+                        <Reveal
+                          variant="image"
+                          className={`group flex aspect-[4/3] w-full gap-3 ${reversed ? "lg:order-2" : ""}`}
+                        >
+                          <div className="relative w-3/5 overflow-hidden rounded-2xl shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)] ring-1 ring-black/5">
+                            {service.photo && (
                               <Image
-                                src={service.icon}
-                                alt={`${service.name} icon`}
-                                width={160}
-                                height={160}
-                                className="h-32 w-32 object-contain opacity-60"
+                                src={service.photo}
+                                alt={`${service.name} — warehouse interior, Transpeed Logistics`}
+                                fill
+                                sizes="(min-width: 1024px) 24rem, 60vw"
+                                className="object-cover transition-transform duration-500 group-hover:scale-105"
                               />
                             )}
                           </div>
-                        )}
-                      </Reveal>
+                          <div className="relative w-2/5 overflow-hidden rounded-2xl shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)] ring-1 ring-black/5">
+                            <Image
+                              src={service.secondPhoto}
+                              alt={`${service.name} — loading dock, Transpeed Logistics`}
+                              fill
+                              sizes="(min-width: 1024px) 16rem, 40vw"
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          </div>
+                        </Reveal>
+                      ) : (
+                        <Reveal
+                          variant="image"
+                          className={`relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)] ring-1 ring-black/5 ${
+                            reversed ? "lg:order-2" : ""
+                          }`}
+                        >
+                          {service.photo ? (
+                            <Image
+                              src={service.photo}
+                              alt={`${service.name} — Transpeed Logistics`}
+                              fill
+                              sizes="(min-width: 1024px) 40rem, 100vw"
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center bg-brand/5">
+                              {service.icon && (
+                                <Image
+                                  src={service.icon}
+                                  alt={`${service.name} icon`}
+                                  width={160}
+                                  height={160}
+                                  className="h-32 w-32 object-contain opacity-60"
+                                />
+                              )}
+                            </div>
+                          )}
+                        </Reveal>
+                      )}
 
                       <div className={reversed ? "lg:order-1" : ""}>
                         <div className="flex items-center gap-3">
-                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand/10 text-xs font-bold text-brand">
+                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#FF3131,#B91C1C)] text-sm font-bold text-white shadow-[0_6px_16px_-4px_rgba(255,49,49,0.45)]">
                             {String(i + 1).padStart(2, "0")}
                           </span>
                           <span className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
@@ -105,19 +159,33 @@ export default function ServicesPage() {
                         <h3 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
                           {service.name}
                         </h3>
+                        <span
+                          aria-hidden="true"
+                          className="mt-3 block h-1 w-14 rounded-full bg-[linear-gradient(90deg,#FF3131,#B91C1C)]"
+                        />
                         <p className="mt-4 max-w-xl text-base leading-relaxed text-zinc-600">
                           {service.description}
                         </p>
-
-                        {service.steps && (
-                          <ServiceProcess
-                            steps={service.steps}
-                            diagram={service.diagram}
-                            serviceName={service.name}
-                          />
-                        )}
                       </div>
                     </div>
+
+                    {/* Moved out of the 2-column grid above and full width
+                        across the whole article (2026-09-25, per Vignesh:
+                        "make the full 6 step extend under the image too i
+                        mean the space is being left why make the 6 step
+                        process con[ge]st under the content only?"). Was
+                        nested inside the text column, so the expanded
+                        diagram + step cards were squeezed into column 2's
+                        width while all of column 1 (below the photo) sat
+                        empty. Now it spans the full article width and uses
+                        that space instead of scrolling/cramming into half
+                        of it. */}
+                    {service.steps && (
+                      <ServiceProcess
+                        steps={service.steps}
+                        serviceName={service.name}
+                      />
+                    )}
 
                     {i < services.length - 1 && (
                       <div className="mt-20 border-t border-zinc-200 sm:mt-24" aria-hidden="true" />

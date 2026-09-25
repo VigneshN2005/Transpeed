@@ -79,32 +79,209 @@ export default function Home() {
             </dl>
           </div>
 
-          <div className="relative">
-            <div
-              className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-brand/40 via-white/10 to-transparent blur-xl"
-              aria-hidden
-            />
-            <div className="relative rounded-2xl ring-1 ring-white/15">
-              <HeroSlideshow />
-            </div>
-            {/* Positioned at the top-left corner rather than bottom — the
-                slideshow itself already uses the bottom edge for its caption
-                text and slide-position dots, so a bottom-anchored card sat
-                on top of both. */}
-            <div className="absolute -top-6 -left-6 z-10 hidden items-center gap-3 rounded-xl border border-zinc-100 bg-white px-4 py-3 text-brand-dark shadow-xl sm:flex">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 7l9-4 9 4-9 4-9-4z" strokeLinejoin="round" />
-                  <path d="M3 7v10l9 4 9-4V7" strokeLinejoin="round" />
-                  <path d="M12 11v10" />
-                </svg>
-              </span>
-              <div className="leading-tight">
-                <p className="text-sm font-bold">9 Offices</p>
-                <p className="text-xs text-zinc-500">Across India</p>
+          {/* self-stretch overrides the grid row's items-center just for
+              this column, so it's forced to the same height as the taller
+              text column on the left, instead of shrink-wrapping to just
+              the slideshow's own height. flex + justify-between then
+              splits that full height between the slideshow (top) and the
+              License card (bottom) — filling what was previously dead
+              black space in the hero on large screens, rather than the
+              card floating at an arbitrary height. On mobile (no
+              self-stretch/flex-col there) it just stacks normally below
+              the slideshow. */}
+          <div className="relative lg:flex lg:h-full lg:flex-col lg:justify-between lg:self-stretch">
+            <div className="relative">
+              <div
+                className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-brand/40 via-white/10 to-transparent blur-xl"
+                aria-hidden
+              />
+              <div className="relative rounded-2xl ring-1 ring-white/15">
+                <HeroSlideshow />
+              </div>
+              {/* Positioned at the top-left corner rather than bottom — the
+                  slideshow itself already uses the bottom edge for its caption
+                  text and slide-position dots, so a bottom-anchored card sat
+                  on top of both. */}
+              <div className="absolute -top-6 -left-6 z-10 hidden items-center gap-3 rounded-xl border border-zinc-100 bg-white px-4 py-3 text-brand-dark shadow-xl sm:flex">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 7l9-4 9 4-9 4-9-4z" strokeLinejoin="round" />
+                    <path d="M3 7v10l9 4 9-4V7" strokeLinejoin="round" />
+                    <path d="M12 11v10" />
+                  </svg>
+                </span>
+                <div className="leading-tight">
+                  <p className="text-sm font-bold">9 Offices</p>
+                  <p className="text-xs text-zinc-500">Across India</p>
+                </div>
               </div>
             </div>
+
+            {/* Lifetime Customs Clearance License — real achievement,
+                supplied by Vignesh (2026-09-21). First attempt placed this
+                as its own section below the whole hero; per Vignesh, the
+                actual ask was the empty space inside the hero itself, below
+                the slideshow photo. Styled as frosted glass rather than a
+                solid card — matches the "AEO-Certified..." pill at the top
+                of the hero and the outlined "About Us" button (both
+                border-white/* + bg-white/5 + backdrop-blur), so it reads as
+                native to the dark hero instead of a light card dropped onto
+                a dark background. The seal reuses the exact shield-check
+                glyph already used for the "Compliance & Accreditation"
+                badge further down this page. Copy tightened into the
+                site's we/our voice ("awarded us" instead of "awarded
+                Transpeed Logistics") and the em-dash dropped, matching the
+                em-dash-free house style already applied everywhere else. */}
+            <Reveal variant="image" delay={120} className="mt-6 lg:mt-8">
+              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-5 backdrop-blur-sm sm:p-6">
+                <div
+                  className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand/20 blur-2xl"
+                  aria-hidden="true"
+                />
+                <div className="relative flex items-start gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand ring-1 ring-brand/30">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+                      <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" strokeLinejoin="round" />
+                      <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand">
+                      Recognized by Indian Customs
+                    </p>
+                    <h2 className="mt-1 font-display text-lg font-bold leading-snug text-white sm:text-xl">
+                      Lifetime Customs Clearance License
+                    </h2>
+                  </div>
+                </div>
+                <p className="relative mt-4 text-sm leading-relaxed text-white/70 sm:text-base">
+                  In recognition of our consistent service quality and regulatory compliance, Indian
+                  Customs has awarded us a Lifetime Customs Clearance License, a distinction held by
+                  very few logistics operators in India, reflecting our long-standing commitment to
+                  compliant, reliable, and high-quality customs operations.
+                </p>
+              </div>
+            </Reveal>
           </div>
+        </Container>
+      </section>
+
+      {/* Mission & Vision (2026-09-21, supplied by Vignesh). Fifth pass.
+          Placement stays exactly where Vignesh corrected it to — the light
+          gap between the hero and "Our Services" — but the structure is
+          now genuinely different, not another variation on "two boxes side
+          by side". Mission and Vision are rendered as ONE continuous card,
+          split down the middle into two solid colour halves (brand-dark,
+          brand-red gradient) with a single connecting badge straddling the
+          seam, so the two ideas read as one continuum rather than two
+          competing tiles. The connector is a crisp white circle with a
+          hard box-shadow, not a blurred glow, so it can't smear the way
+          the earlier overlapping cards did — that failure mode is
+          structurally impossible here, there is nothing translucent or
+          blurred crossing an edge. Each half keeps a large low-opacity
+          outline-icon watermark in its corner for depth, plus the
+          `.hero-grid` texture already used on the hero and the Company
+          page's CSR panel, so the piece reads as part of the same design
+          system rather than a one-off.
+
+          CAUGHT AND FIXED same day: `.hero-grid` carries its own
+          mask-image (a radial fade), and that mask applies to the whole
+          element it's on, not just the grid lines. Putting the class
+          directly on each panel div faded out the panel's own background
+          colour and its text along with the grid, which is what produced
+          the broken, near-invisible Vision half and the dark blob on
+          Mission that Vignesh flagged as "not at all good". Fixed by
+          giving each panel its own `absolute inset-0` overlay div carrying
+          `.hero-grid` and nothing else, so the mask only ever fades that
+          textured layer, never the panel's real background or content.
+          Any future reuse of `.hero-grid` on a smaller, content-bearing
+          element should go through this same overlay pattern, not applied
+          to the element directly.
+
+          A thin two-tone bar across the very top ties both halves
+          together before the eye even reaches the icons. Still the short
+          homepage tagline versions, distinct from
+          the longer Vision/Mission paragraphs on the Company page. */}
+      <section className="relative bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(255,49,49,0.06),transparent_65%)] py-20">
+        <Container>
+          <Reveal className="mx-auto max-w-xl text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-brand">
+              What Drives Every Shipment
+            </span>
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
+              Mission &amp; Vision
+            </h2>
+          </Reveal>
+
+          <Reveal className="mt-12">
+            <div className="relative isolate overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)]">
+              <div className="absolute inset-x-0 top-0 z-10 h-1.5 bg-gradient-to-r from-brand-dark via-white/60 to-brand" aria-hidden="true" />
+
+              <div className="grid lg:grid-cols-2">
+                <div className="relative overflow-hidden bg-brand-dark p-10 pt-12 sm:p-12 lg:p-16">
+                  <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                    className="pointer-events-none absolute -bottom-10 -right-10 h-48 w-48 text-white/[0.05]"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 21V4" strokeLinecap="round" />
+                    <path d="M5 4h13l-3 4 3 4H5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-brand ring-1 ring-white/20">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                      <path d="M5 21V4" strokeLinecap="round" />
+                      <path d="M5 4h13l-3 4 3 4H5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <p className="relative mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-brand">Mission</p>
+                  <p className="relative mt-3 font-display text-2xl font-semibold leading-snug text-white sm:text-3xl">
+                    We commit and stand with you: every mile, every shipment, every time.
+                  </p>
+                </div>
+
+                <div className="relative overflow-hidden bg-gradient-to-br from-brand to-[#9c0f0b] p-10 pt-12 sm:p-12 lg:p-16">
+                  <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                    className="pointer-events-none absolute -bottom-10 -right-10 h-48 w-48 text-white/[0.08]"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 12s3.8-6.5 10-6.5 10 6.5 10 6.5-3.8 6.5-10 6.5S2 12 2 12Z" strokeLinejoin="round" />
+                    <circle cx="12" cy="12" r="2.7" />
+                  </svg>
+                  <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                      <path d="M2 12s3.8-6.5 10-6.5 10 6.5 10 6.5-3.8 6.5-10 6.5S2 12 2 12Z" strokeLinejoin="round" />
+                      <circle cx="12" cy="12" r="2.7" />
+                    </svg>
+                  </span>
+                  <p className="relative mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-white/80">Vision</p>
+                  <p className="relative mt-3 font-display text-2xl font-semibold leading-snug text-white sm:text-3xl">
+                    To be India&apos;s most trusted logistics partner, recognized for reliability,
+                    compliance, and an unwavering commitment to the businesses we serve.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className="pointer-events-none absolute left-1/2 top-1/2 z-20 hidden h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white ring-8 ring-white/90 lg:flex"
+                style={{ boxShadow: "0 12px 30px -8px rgba(0,0,0,0.45)" }}
+                aria-hidden="true"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff3131" strokeWidth="2" aria-hidden="true">
+                  <path d="M5 12h14" strokeLinecap="round" />
+                  <path d="M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+          </Reveal>
         </Container>
       </section>
 
@@ -142,73 +319,94 @@ export default function Home() {
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark drop-shadow-[0_4px_8px_rgba(0,0,0,0.14)] sm:text-4xl">
               Our Services
             </h2>
+            {/* New heading + description (2026-09-21, per Vignesh) — same
+                brand line now used as the Services page's hero title,
+                added here as a subheading directly below "Our Services"
+                rather than replacing it. */}
+            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.15em] text-brand sm:text-base">
+              End to End Supply Chain Solutions
+            </p>
             <p className="mt-4 text-base text-zinc-600">
-              Six ways we keep your supply chain moving. Select one to see the full story.
+              You don&apos;t need five vendors to move your business forward. You need one partner who gets it
+              right, on schedule, at the right price, every time.
             </p>
           </Reveal>
           {/* Scroll-reveal (2026-09-14, per Vignesh: "things appearing from
               top to its current position as i scroll"). Staggered by index
               (capped at 240ms) so the six cards settle in left-to-right,
               row-by-row rather than all landing at once. */}
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service, i) => (
-              <Reveal key={service.slug} delay={Math.min(i * 60, 240)}>
-              <Link
-                href={`/services#${service.slug}`}
-                // Card box itself given a visible default shadow (not just
-                // on hover) and a slightly darker border, so all six read as
-                // real boxes at rest rather than only revealing an edge on
-                // hover. Per Vignesh (2026-09-14) — shadow-sm, then even
-                // shadow-lg, both turned out too faint to actually register
-                // at a glance (Tailwind's default shadow opacity is low).
-                // Switched to an explicit, stronger shadow so it's
-                // unmistakable rather than something you have to zoom in to
-                // confirm is there.
-                className="group flex flex-col rounded-xl border border-zinc-300 bg-white p-6 shadow-[0_12px_28px_-8px_rgba(0,0,0,0.28)] transition-all hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.35)]"
-              >
-                {service.icon && (
-                  // Icon tile bumped up again, h-24/w-96 -> h-28/w-112
-                  // (2026-09-14, per Vignesh) — matching the Services page's
-                  // own icon-box treatment. Background opacity raised from
-                  // bg-brand/5 to bg-brand/10 (still a light pink, not the
-                  // saturated brand red) so the box actually reads as a box
-                  // rather than disappearing against the white card — the
-                  // redundant ring was dropped in favour of a slightly
-                  // stronger border doing that job on its own. Drop shadow
-                  // added (2026-09-14, per Vignesh), then corrected the same
-                  // day — the first attempt tinted the shadow brand/10,
-                  // which at 10% opacity was basically invisible against the
-                  // light card (confirmed from a screenshot). Switched to a
-                  // plain neutral shadow at full default opacity, sized up
-                  // to shadow-xl, which actually reads as a lift.
-                  <span className="flex h-28 w-28 items-center justify-center rounded-2xl border border-brand/15 bg-brand/10 p-4 shadow-xl transition-all group-hover:border-brand/30 group-hover:bg-brand/15 group-hover:shadow-2xl">
-                    <Image
-                      src={service.icon}
-                      alt=""
-                      width={112}
-                      height={112}
-                      className="h-full w-full object-contain"
-                    />
-                  </span>
-                )}
-                <h3 className="mt-4 text-lg font-semibold text-brand-dark group-hover:text-brand">
-                  {service.name}
-                </h3>
-                <p className="mt-2 text-sm text-zinc-600">{service.shortDescription}</p>
-                {/* Always visible now, not just on hover — otherwise nothing
-                    signals these cards are clickable until the cursor
-                    happens to land on one. Anchored to the bottom of the
-                    card (mt-auto) so it lines up evenly across a row even
-                    when descriptions run different lengths. */}
-                <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-brand">
-                  View service
-                  <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
-                    →
-                  </span>
-                </span>
-              </Link>
-              </Reveal>
-            ))}
+          {/* Glass/color/shadow redesign (2026-09-25, per Vignesh: "make the
+              punchcard have a color, shadow, glass effect... modern advanced
+              better looking professional aesthetic... increase the size of
+              the logos"). Supersedes the flat white GitHub-restored card
+              above.
+              Pass 1 (bg-white/70 + brand/15 blobs) read as "still white and
+              plain" live. Pass 2 (a diagonal rose gradient baked into the
+              whole card) read as "same color as the background" — the
+              section's own pale pink wash swallowed a pink-washed card.
+              Pass 3 (bright white card + corner glow) fixed the contrast
+              problem but Vignesh's actual reference was the dark glass
+              "Lifetime Customs Clearance License" card in the hero above —
+              not just its glow, the whole treatment. Final: reuse that
+              card's exact recipe (border-white/10-ish + a near-opaque
+              brand-dark fill + backdrop-blur + a brand/blur corner glow),
+              adapted from "light glass on a dark hero" to "dark glass on
+              this light pink section" — same technique, inverted context,
+              so it reads as premium/modern rather than just recoloring
+              things black. Text flips to white/white-70 accordingly.
+              Everything here is brand-red/near-black, matching the hero
+              card's own palette, per Vignesh's earlier "noo only with the
+              color the website matching with."
+              Pass 5 (2026-09-25, per Vignesh, after seeing this dark
+              version live): "make the logos bigger its very small" and
+              "too much uneven red color in the punchcard making it look
+              bad". Fixes: (a) icon badge grows again, 144px box -> 176px
+              box (~152px visible icon, up from ~112px) with less padding
+              so the icon itself reads noticeably larger, not just its
+              frame; (b) the single big corner glow (224px, 35% opacity,
+              blur-2xl) was overpowering and bled unevenly across most of
+              the card instead of reading as a clean accent — shrunk to
+              128px at 15% opacity and pushed further outside the card
+              corner so only a soft, even highlight shows, letting the
+              near-black glass itself carry the card rather than a red
+              wash on top of it. */}
+          <div className="relative mt-10">
+            <div aria-hidden="true" className="pointer-events-none absolute -top-16 -left-10 h-80 w-80 rounded-full bg-brand/20 blur-3xl" />
+            <div aria-hidden="true" className="pointer-events-none absolute top-1/3 right-4 h-72 w-72 rounded-full bg-brand/16 blur-3xl" />
+            <div aria-hidden="true" className="pointer-events-none absolute -bottom-16 left-1/3 h-80 w-80 rounded-full bg-brand-dark/10 blur-3xl" />
+            <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {services.map((service, i) => (
+                <Reveal key={service.slug} delay={Math.min(i * 60, 240)} className="h-full">
+                <Link
+                  href={`/services#${service.slug}`}
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-brand-dark/[0.94] p-7 shadow-[0_24px_55px_-14px_rgba(0,0,0,0.55),0_8px_24px_-4px_rgba(255,49,49,0.22),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md backdrop-saturate-150 transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:bg-brand-dark hover:shadow-[0_32px_70px_-16px_rgba(0,0,0,0.6),0_14px_34px_-6px_rgba(255,49,49,0.4),inset_0_1px_0_rgba(255,255,255,0.08)]"
+                >
+                  <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-brand/15 blur-2xl" />
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+                  {service.icon && (
+                    <span className="flex h-44 w-44 shrink-0 items-center justify-center rounded-2xl border border-brand/25 bg-[radial-gradient(circle_at_30%_25%,rgba(255,49,49,0.22),rgba(255,49,49,0.04)_70%)] p-3 shadow-[0_10px_24px_-8px_rgba(255,49,49,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:border-brand/45">
+                      <Image src={service.icon} alt="" width={176} height={176} className="h-full w-full object-contain drop-shadow-sm" />
+                    </span>
+                  )}
+                  <div className="mt-5 flex flex-1 flex-col">
+                    <h3 className="text-lg font-semibold text-white group-hover:text-brand">{service.name}</h3>
+                    <p className="mt-2 text-sm text-white/65">{service.shortDescription}</p>
+                    {/* Always visible, not just on hover — otherwise nothing
+                        signals these cards are clickable until the cursor
+                        happens to land on one. Anchored to the bottom
+                        (mt-auto) so it lines up evenly across a row even when
+                        descriptions run different lengths. */}
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-brand">
+                      View service
+                      <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+                        →
+                      </span>
+                    </span>
+                  </div>
+                </Link>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </Container>
       </section>

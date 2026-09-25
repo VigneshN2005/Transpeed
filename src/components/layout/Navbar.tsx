@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import Container from "@/components/ui/Container";
 import Logo from "@/components/layout/Logo";
 import { services } from "@/data/services";
@@ -19,33 +19,55 @@ import { services } from "@/data/services";
 // menu now happens at lg (1024px) instead, and the gap between items was
 // tightened (gap-8 -> gap-6) with whitespace-nowrap added so no link can
 // ever wrap mid-phrase again even right at the edge of that breakpoint.
+// Small helper for the top-level text links (2026-09-25, per Vignesh:
+// "can anything be done to this" re: the plain white/black navbar) — a
+// red-gradient underline that grows in on hover instead of just a color
+// change, so the bar reads as branded rather than a generic corporate nav.
+function NavLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="group relative whitespace-nowrap py-1 text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
+    >
+      {children}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 -bottom-1 h-0.5 origin-left scale-x-0 rounded-full bg-gradient-to-r from-brand to-brand-dark transition-transform duration-200 group-hover:scale-x-100"
+      />
+    </Link>
+  );
+}
+
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/95 shadow-[0_1px_0_rgba(0,0,0,0.03),0_16px_32px_-24px_rgba(0,0,0,0.18)] backdrop-blur">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand/50 to-transparent"
+      />
       <Container className="flex h-20 items-center justify-between">
         <Logo />
 
         <nav className="hidden items-center gap-6 lg:flex">
-          <Link
-            href="/"
-            className="whitespace-nowrap text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
-          >
-            Home
-          </Link>
+          <NavLink href="/">Home</NavLink>
 
           <div className="group relative">
             <Link
               href="/services"
-              className="flex items-center gap-1 whitespace-nowrap text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
+              className="flex items-center gap-1 whitespace-nowrap py-1 text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
             >
               Services
               <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className="mt-0.5">
                 <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </Link>
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 -bottom-1 h-0.5 origin-left scale-x-0 rounded-full bg-gradient-to-r from-brand to-brand-dark transition-transform duration-200 group-hover:scale-x-100"
+            />
             <div className="invisible absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 translate-y-1 rounded-xl border border-zinc-200 bg-white p-2 opacity-0 shadow-xl transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               {services.map((service) => (
                 <Link
@@ -59,33 +81,13 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Link
-            href="/company"
-            className="whitespace-nowrap text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
-          >
-            Company
-          </Link>
-          <Link
-            href="/people"
-            className="whitespace-nowrap text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
-          >
-            People
-          </Link>
-          <Link
-            href="/announcements"
-            className="whitespace-nowrap text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
-          >
-            Client Announcements
-          </Link>
-          <Link
-            href="/contact"
-            className="whitespace-nowrap text-sm font-medium text-zinc-700 transition-colors hover:text-brand"
-          >
-            Contact Us
-          </Link>
+          <NavLink href="/company">Company</NavLink>
+          <NavLink href="/people">People</NavLink>
+          <NavLink href="/announcements">Client Announcements</NavLink>
+          <NavLink href="/contact">Contact Us</NavLink>
           <Link
             href="/admin"
-            className="whitespace-nowrap rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-500 transition-colors hover:border-brand hover:text-brand"
+            className="whitespace-nowrap rounded-full bg-[linear-gradient(135deg,#FF3131,#B91C1C)] px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-white shadow-[0_4px_12px_-2px_rgba(255,49,49,0.4)] transition-transform hover:scale-105"
           >
             Admin
           </Link>

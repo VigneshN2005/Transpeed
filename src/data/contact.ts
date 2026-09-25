@@ -5,8 +5,9 @@ export const companyEmail = "info@transpeedlogistics.com";
 // Real addresses from Gokul's "TP - Website.docx" + follow-up
 // "TP - Website1.docx" (which supplied the Mysore address). Chennai: he
 // separately confirmed using the "present" office address, not the new one
-// that was also shared. Pune is still genuinely pending — a new office, to
-// be listed as a branch for now with its address to follow.
+// that was also shared. Pune and Kanpur (the latter added 2026-09-25, per
+// Vignesh) are still genuinely pending — new offices, listed as branches
+// for now with their addresses to follow.
 export const locations: Location[] = [
   {
     city: "Bangalore",
@@ -42,17 +43,40 @@ export const locations: Location[] = [
     address: "#23, 10th Main, 3rd Cross, F Block, JP Nagar, Mysore – 570008",
   },
   { city: "Pune", address: "New branch office, address to follow", isBranch: true },
+  { city: "Kanpur", address: "New branch office, address to follow", isBranch: true },
 ];
 
-// Overseas Sourcing & Procurement offices — country names only, per Gokul.
-export const overseasPresence = ["USA", "Singapore", "Germany", "Italy", "Europe"];
+// Overseas Sourcing & Procurement offices — country/region names only, per
+// Gokul. Original 5 (USA, Singapore, Germany, Italy, Europe) plus a
+// 2026-09-21 addition from Vignesh: 6 broader regions (Far East, Central
+// Asia, South Asia, South West Asia, Middle East, Africa) and 4 more
+// specific European countries (Norway, Sweden, Denmark, Austria).
+export const overseasPresence = [
+  "USA",
+  "Singapore",
+  "Germany",
+  "Italy",
+  "Europe",
+  "Far East",
+  "Central Asia",
+  "South Asia",
+  "South West Asia",
+  "Middle East",
+  "Africa",
+  "Norway",
+  "Sweden",
+  "Denmark",
+  "Austria",
+];
 
-// Phone and WhatsApp are Gokul's own number, the temporary single point of
-// contact until Transpeed hires a secretary. "Chatbot" isn't a real link —
-// its href is intercepted to open the on-page chatbot widget instead.
+// Phone and WhatsApp share one number, the temporary single point of
+// contact until Transpeed hires a secretary (updated 2026-09-21, per
+// Vignesh: "replace all the phone numbers by this"). "Chatbot" isn't a
+// real link — its href is intercepted to open the on-page chatbot widget
+// instead.
 export const contactChannels: ContactChannel[] = [
-  { label: "WhatsApp", value: "Transpeed Logistics Pvt Ltd", href: "https://wa.me/918220025847" },
+  { label: "WhatsApp", value: "Transpeed Logistics Pvt Ltd", href: "https://wa.me/916360751645" },
   { label: "Chatbot", value: "Ask us anything, instantly", href: "#chatbot" },
   { label: "Email", value: companyEmail, href: `mailto:${companyEmail}` },
-  { label: "Phone", value: "+91 82200 25847", href: "tel:+918220025847" },
+  { label: "Phone", value: "+91 63607 51645", href: "tel:+916360751645" },
 ];

@@ -57,24 +57,18 @@ async function callChatbotApi(payload: Record<string, unknown>) {
   return res.json();
 }
 
-// Small bot glyph used for the header avatar and each bot bubble's avatar —
-// a friendly rounded chat-bubble-with-antenna mark rather than a stock icon,
-// so it reads as "Transpeed's assistant" rather than a generic widget.
-function BotMark({ className }: { className?: string }) {
+// The header avatar and each bot bubble's avatar — the real Transpeed logo
+// mark on a white badge (2026-09-25, per Vignesh: "add some logo for the
+// bot" — the previous generic robot-glyph icon read as a stock chat-widget
+// icon, not the company's own brand). `ring` size is separate from the
+// badge size so the same component works both large (header) and small
+// (per-message).
+function BotAvatar({ size = "h-10 w-10", ring = "ring-2 ring-brand/40" }: { size?: string; ring?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className}>
-      <circle cx="12" cy="13" r="7" fill="currentColor" opacity="0.16" />
-      <path
-        d="M12 3v2.5M8.5 9.5h7a2 2 0 0 1 2 2V15a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2z"
-        stroke="currentColor"
-        strokeWidth={1.6}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="10" cy="13.2" r="1" fill="currentColor" />
-      <circle cx="14" cy="13.2" r="1" fill="currentColor" />
-      <circle cx="12" cy="3" r="1.1" fill="currentColor" />
-    </svg>
+    <span className={`flex ${size} shrink-0 items-center justify-center rounded-full bg-white p-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.15)] ${ring}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/logo/transpeed-logo.png" alt="" className="h-full w-full object-contain" />
+    </span>
   );
 }
 
@@ -228,7 +222,7 @@ export default function ChatbotWidget() {
         // 2*1rem side offset would overflow); max-h keeps it from
         // outgrowing short mobile viewports the same way. Per Vignesh's
         // 2026-09-14 mobile/desktop-fit pass.
-        <div className="flex h-[30rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border border-black/5 bg-white shadow-[0_30px_70px_-25px_rgba(0,0,0,0.45)] max-h-[calc(100vh-7rem)]">
+        <div className="flex h-[30rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border-2 border-brand/30 bg-white shadow-[0_30px_70px_-25px_rgba(0,0,0,0.45),0_14px_34px_-18px_rgba(255,49,49,0.3)] max-h-[calc(100vh-7rem)]">
           {/* Header — brand gradient with a bot avatar + live-status dot,
               replacing the plain white/text-only header. */}
           <div className="relative overflow-hidden bg-gradient-to-br from-brand-dark via-[#241414] to-brand-dark px-4 py-4">
@@ -242,9 +236,7 @@ export default function ChatbotWidget() {
               aria-hidden="true"
             />
             <div className="relative flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-[0_0_0_3px_rgba(255,49,49,0.25)]">
-                <BotMark className="h-6 w-6" />
-              </span>
+              <BotAvatar size="h-11 w-11" ring="ring-2 ring-white/30" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-white">Transpeed Assistant</p>
                 <p className="mt-0.5 flex items-center gap-1.5 text-xs text-white/60">
@@ -280,11 +272,9 @@ export default function ChatbotWidget() {
 
               return (
                 <div key={i} className="flex items-start gap-2">
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
-                    <BotMark className="h-4 w-4" />
-                  </span>
+                  <BotAvatar size="h-8 w-8" />
                   <div className="flex min-w-0 flex-col gap-2">
-                    <p className="max-w-[15rem] rounded-2xl rounded-tl-md border border-zinc-100 bg-white px-3.5 py-2 text-sm leading-relaxed text-zinc-700 shadow-sm">
+                    <p className="max-w-[15rem] rounded-2xl rounded-tl-md border-2 border-zinc-200 bg-white px-3.5 py-2 text-sm leading-relaxed text-zinc-700 shadow-sm">
                       {m.text}
                     </p>
                     {m.kind === "suggestions" && (
@@ -294,7 +284,7 @@ export default function ChatbotWidget() {
                             key={s.id}
                             type="button"
                             onClick={() => askQuestion(s.question)}
-                            className="rounded-full border border-brand/30 bg-white px-2.5 py-1 text-xs font-medium text-brand-dark transition-colors hover:border-brand hover:bg-brand/5"
+                            className="rounded-full border-2 border-brand bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand-dark shadow-sm transition-colors hover:bg-brand hover:text-white"
                           >
                             {s.question}
                           </button>
@@ -308,7 +298,7 @@ export default function ChatbotWidget() {
                             key={o.id}
                             type="button"
                             onClick={() => askQuestion(o.label)}
-                            className="rounded-full border border-brand/30 bg-white px-2.5 py-1 text-xs font-medium text-brand-dark transition-colors hover:border-brand hover:bg-brand/5"
+                            className="rounded-full border-2 border-brand bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand-dark shadow-sm transition-colors hover:bg-brand hover:text-white"
                           >
                             {o.label}
                           </button>
@@ -325,10 +315,8 @@ export default function ChatbotWidget() {
                 land instead of a static panel. */}
             {sending && (
               <div className="flex items-start gap-2">
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
-                  <BotMark className="h-4 w-4" />
-                </span>
-                <span className="flex items-center gap-1 rounded-2xl rounded-tl-md border border-zinc-100 bg-white px-3.5 py-2.5 shadow-sm">
+                <BotAvatar size="h-8 w-8" />
+                <span className="flex items-center gap-1 rounded-2xl rounded-tl-md border-2 border-zinc-200 bg-white px-3.5 py-2.5 shadow-sm">
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.3s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.15s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400" />
@@ -338,28 +326,34 @@ export default function ChatbotWidget() {
           </div>
 
           <div className="border-t border-zinc-100 bg-white p-3">
-            <div className="mb-2.5 flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none]">
-              {QUICK_REPLIES.map((q) => (
-                <button
-                  key={q.label}
-                  type="button"
-                  onClick={() => askQuestion(q.query)}
-                  disabled={sending}
-                  className="flex shrink-0 items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:border-brand hover:bg-brand/5 hover:text-brand-dark disabled:opacity-60"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    <path d={q.icon} />
-                  </svg>
-                  {q.label}
-                </button>
-              ))}
+            <div className="relative">
+              <div className="mb-2.5 flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none]">
+                {QUICK_REPLIES.map((q) => (
+                  <button
+                    key={q.label}
+                    type="button"
+                    onClick={() => askQuestion(q.query)}
+                    disabled={sending}
+                    className="flex shrink-0 items-center gap-1.5 rounded-full border-2 border-brand/40 bg-white px-2.5 py-1.5 text-xs font-semibold text-brand-dark shadow-sm transition-colors hover:border-brand hover:bg-brand hover:text-white disabled:opacity-60"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <path d={q.icon} />
+                    </svg>
+                    {q.label}
+                  </button>
+                ))}
+              </div>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 right-0 mb-2.5 w-8 bg-gradient-to-l from-white to-transparent"
+              />
             </div>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 askQuestion(input);
               }}
-              className="flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 p-1 pl-4 transition-colors focus-within:border-brand"
+              className="flex items-center gap-2 rounded-full border-2 border-zinc-300 bg-white p-1 pl-4 shadow-sm transition-all focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/20"
             >
               <input
                 value={input}

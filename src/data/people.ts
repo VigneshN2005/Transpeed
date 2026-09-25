@@ -34,8 +34,12 @@ import type { TeamMember } from "@/types";
 //
 // Photos: cropped from the team photo in Gokul's doc — real photos of all
 // three. Hari Singh's and Sandhya's are final (per Gokul, their existing
-// photos are being reused as-is). Venkatesh's is his edited replacement
-// photo (final, replacing the earlier current-photo crop).
+// photos are being reused as-is). Venkatesh's photo was swapped again
+// 2026-09-21 per Vignesh: a new event photo (mid-speech at a podium, mic in
+// hand, lapel pins) replacing the earlier posed studio headshot. Cropped to
+// the same 4:5 portrait frame the People page uses (face-centered via
+// Haar-cascade detection, not eyeballed) rather than relying on the
+// browser's object-cover to crop an unreviewed frame.
 export const people: TeamMember[] = [
   {
     slug: "venkatesh-rao",
@@ -82,11 +86,11 @@ export const people: TeamMember[] = [
     ],
     leadershipNote:
       "Mr. Venkatesh Rao's leadership combines entrepreneurial drive with operational discipline, a strong instinct for identifying growth opportunities in emerging markets, paired with the infrastructure and teams to capitalise on them. He's widely respected for his mentorship style, empowering teams with clear direction while encouraging ownership and accountability at every level.",
-    // Filename bumped to -v2 (rather than a ?query string, which Next's
+    // Filename bumped to -v3 (rather than a ?query string, which Next's
     // Image component rejects unless allow-listed in images.localPatterns)
-    // so the new edited photo gets a fresh URL instead of Next's image
-    // optimizer serving a stale cached render of the old file at this path.
-    photo: "/images/people/venkatesh-rao-v2.jpg",
+    // so this new photo gets a fresh URL instead of Next's image optimizer
+    // serving a stale cached render of the old file at this path.
+    photo: "/images/people/venkatesh-rao-v3.jpg",
   },
   {
     slug: "sandhya-rao",
@@ -104,6 +108,39 @@ export const people: TeamMember[] = [
     leadershipNote:
       "Her decades of experience within one of the country's most respected financial institutions have equipped her with deep insight into governance, compliance, and organisational discipline, qualities she now brings to Transpeed Logistics as Co-Founder, helping shape the company's foundation with the same rigour and dedication that defined her career at the RBI.",
     photo: "/images/people/sandhya-rao.jpg",
+  },
+  // Added 2026-09-21, per Vignesh, with real copy and photo supplied
+  // directly (not from Gokul's docx). Em-dashes in the supplied text
+  // rewritten as commas/full stops and "rigor" normalised to "rigour", to
+  // match the em-dash-free, British-spelling house style already applied
+  // across the rest of this file (2026-09-15 site-wide pass). Photo cropped
+  // to the same 4:5 portrait frame as the others, face-centered via
+  // Haar-cascade detection on the supplied photo.
+  {
+    slug: "sharanya-venkatesh",
+    name: "Ms. Sharanya Venkatesh",
+    role: "Shareholder & Board Member",
+    bio: "Ms. Sharanya Venkatesh represents the next generation of leadership at Transpeed Logistics, bringing a rare combination of global academic excellence and a strong foundation in business strategy to the organisation as a Shareholder and Board Member. Her education across India, the United States, and the United Kingdom reflects a truly international outlook, one she brings to the boardroom as Transpeed continues building its vision of a world-class, compliance-driven logistics partner for businesses across the globe.",
+    experience: [
+      {
+        org: "Christ University, Bangalore",
+        period: "Undergraduate",
+        detail: "Completed her undergraduate degree, the first step in an academic journey that would go on to span three countries.",
+      },
+      {
+        org: "Illinois Institute of Technology, Chicago, USA",
+        period: "Postgraduate",
+        detail: "Went on to complete postgraduate studies, broadening her exposure to a global business environment.",
+      },
+      {
+        org: "University of Oxford, England",
+        period: "MBA",
+        detail: "Completed her Master of Business Administration (MBA), one of the world's most prestigious business schools.",
+      },
+    ],
+    leadershipNote:
+      "This cross-continental academic journey has shaped her into a thoughtful, globally-minded voice on Transpeed's board, one that blends analytical rigour with long-term strategic thinking, and reflects the company's commitment to combining experienced leadership with fresh, forward-looking perspective as it moves into its next phase of growth.",
+    photo: "/images/people/sharanya-venkatesh.jpg",
   },
   {
     slug: "hari-singh",

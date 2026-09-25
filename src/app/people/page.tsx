@@ -40,7 +40,7 @@ export default function PeoplePage() {
               <Reveal key={person.slug} delay={Math.min(i * 60, 240)}>
                 <article className="relative">
                   <div
-                    className={`relative grid gap-10 lg:grid-cols-[26rem_1fr] lg:items-center lg:gap-16 ${
+                    className={`relative grid gap-10 lg:grid-cols-[26rem_1fr] lg:items-start lg:gap-16 ${
                       reversed ? "lg:[direction:rtl]" : ""
                     }`}
                   >

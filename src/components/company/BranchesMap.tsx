@@ -18,6 +18,7 @@ const COORDS: Record<string, [number, number]> = {
   Mumbai: [19.076, 72.8777],
   Mysore: [12.2958, 76.6394],
   Pune: [18.5204, 73.8567],
+  Kanpur: [26.4499, 80.3319],
 };
 
 declare global {

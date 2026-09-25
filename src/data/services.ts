@@ -15,12 +15,33 @@ import type { Service } from "@/types";
 // sharing the same warm/amber-accent cinematic style so the six read as
 // one consistent shoot) used as a hero image on each service card, separate
 // from the existing line-art `icon` used in the small icon tile.
+//
+// `cardPhoto` added (2026-09-21, per Vignesh, after the home page's "Our
+// Services" grid tried reusing `photo` directly and that same change
+// bled into the Services page too, which he explicitly didn't want:
+// "why did u change in the service page too? i wanted u to change only
+// in the home page service punch card". Kept as its own field for exactly
+// that reason — the two pages need to be free to carry different images
+// going forward, not just for this one swap. Freight Forwarding's is a
+// freshly generated photorealistic daylight shot (not the cinematic
+// sunset style `photo` uses), per Vignesh's explicit direction that the
+// punch-card image shouldn't look like the existing commissioned set.
+// The remaining five (2026-09-21) follow the same brief — natural
+// daylight, documentary, no dramatic grading, people-free by default —
+// generated from prompts matched to each service's real content.
+//
+// `icon` files renamed to `-v2` (2026-09-25, per Vignesh) when the colorful
+// brand-red/black icon set replaced the old black line-art set — same
+// filename would've kept serving the old cached image via Next's dev image
+// optimizer, so the new art got a new filename instead of overwriting the
+// old path.
 export const services: Service[] = [
   {
     slug: "freight-forwarding-management",
     name: "Freight Forwarding Management",
-    icon: "/images/services/freight-forwarding-management.png",
+    icon: "/images/services/freight-forwarding-management-v2.png",
     photo: "/images/services/freight-forwarding-management-photo.jpg",
+    cardPhoto: "/images/services/freight-forwarding-management-card.jpg",
     tagline: "Air, Sea & Road: Wherever Your Business Needs to Go",
     shortDescription:
       "End-to-end coordination of ocean, air and multimodal shipments: booking, documentation, and carrier liaison handled as one service.",
@@ -30,8 +51,9 @@ export const services: Service[] = [
   {
     slug: "customs-clearance",
     name: "Customs Clearance",
-    icon: "/images/services/customs-clearance.png",
+    icon: "/images/services/customs-clearance-v2.png",
     photo: "/images/services/customs-clearance-photo.jpg",
+    cardPhoto: "/images/services/customs-clearance-card.jpg",
     tagline: "Compliance Isn't Optional. Neither Is Speed.",
     shortDescription:
       "Import/export clearance handled by in-house AEO-certified specialists: compliant, duty-optimised, and delay-free.",
@@ -41,8 +63,9 @@ export const services: Service[] = [
   {
     slug: "project-logistics",
     name: "Project Logistics",
-    icon: "/images/services/project-logistics.png",
+    icon: "/images/services/project-logistics-v2.png",
     photo: "/images/services/project-logistics-photo.jpg",
+    cardPhoto: "/images/services/project-logistics-card.jpg",
     tagline: "When Standard Shipping Isn't an Option",
     shortDescription:
       "Planning and execution for oversized, heavy-lift and time-critical project cargo, door-to-site.",
@@ -52,8 +75,10 @@ export const services: Service[] = [
   {
     slug: "warehousing-and-distribution",
     name: "Warehousing and Distribution",
-    icon: "/images/services/warehousing-and-distribution.png",
+    icon: "/images/services/warehousing-and-distribution-v2.png",
     photo: "/images/services/warehousing-and-distribution-photo.jpg",
+    cardPhoto: "/images/services/warehousing-and-distribution-card.jpg",
+    secondPhoto: "/images/services/warehousing-and-distribution-photo-2.jpg",
     tagline: "Your Inventory, Always Visible. Always Secure. Always Ready to Dispatch.",
     shortDescription:
       "Storage, inventory handling and last-mile distribution across our network of facilities.",
@@ -63,8 +88,9 @@ export const services: Service[] = [
   {
     slug: "trucking-and-delivery",
     name: "Trucking and Delivery",
-    icon: "/images/services/trucking-and-delivery.png",
+    icon: "/images/services/trucking-and-delivery-v2.png",
     photo: "/images/services/trucking-and-delivery-photo.jpg",
+    cardPhoto: "/images/services/trucking-and-delivery-card.jpg",
     tagline: "The Last Mile, Handled Like It's the Only Mile That Matters",
     shortDescription:
       "Domestic road transport, scheduled and tracked from pickup through final delivery.",
@@ -74,8 +100,9 @@ export const services: Service[] = [
   {
     slug: "sourcing-and-procurement",
     name: "Sourcing and Procurement",
-    icon: "/images/services/sourcing-and-procurement.png",
+    icon: "/images/services/sourcing-and-procurement-v2.png",
     photo: "/images/services/sourcing-and-procurement-photo.jpg",
+    cardPhoto: "/images/services/sourcing-and-procurement-card.jpg",
     diagram: "/images/services/sourcing-process-diagram.png",
     tagline: "Sourced. Procured. Imported. Cleared. Stored. Delivered. One Team, Start to Finish.",
     shortDescription:
@@ -85,26 +112,32 @@ export const services: Service[] = [
     steps: [
       {
         title: "Sourced",
+        icon: "/images/services/process-sourced.png",
         text: "Whether you already have an approved supplier or need us to identify one, we adapt to your process. For customer-approved suppliers, we source directly as per your specifications. Where sourcing support is needed, we vet suppliers using our own expertise and take them through your approval process before onboarding.",
       },
       {
         title: "Procured",
+        icon: "/images/services/process-procured.png",
         text: "We manage procurement in line with your defined MRP, ensuring cost control and compliance at every step, so you get the right cargo, at the right price, without surprises.",
       },
       {
         title: "Imported",
+        icon: "/images/services/process-imported.png",
         text: "We handle end-to-end import by air and sea, backed by our logistics expertise, covering every leg from the supplier's door to the destination port.",
       },
       {
         title: "Cleared",
+        icon: "/images/services/process-cleared.png",
         text: "Our in-house customs clearance capability ensures your cargo moves through regulatory checkpoints without delays or guesswork.",
       },
       {
         title: "Stored",
+        icon: "/images/services/process-stored.png",
         text: "We offer both bonded and private warehousing, giving you the flexibility to stock cargo securely until it's needed.",
       },
       {
         title: "Delivered",
+        icon: "/images/services/process-delivered.png",
         text: "Using our Milk Run delivery model, we move cargo from the supplier directly to your shop floor, on a daily, weekly, or monthly schedule, based on your requirement.",
       },
     ],

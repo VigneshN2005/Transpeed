@@ -33,13 +33,20 @@ function GlobeIcon({ className }: { className?: string }) {
 }
 
 // Flag emoji per overseas country — falls back to the plain globe tile
-// (below) for any name not in this list rather than guessing.
+// (below) for any name not in this list rather than guessing. The 6 broader
+// regions added 2026-09-21 (Far East, Central Asia, South Asia, South West
+// Asia, Middle East, Africa) deliberately have no single flag and fall
+// back to the globe tile; the 4 countries added alongside them do get one.
 const COUNTRY_FLAGS: Record<string, string> = {
   USA: "🇺🇸",
   "United States": "🇺🇸",
   Singapore: "🇸🇬",
   Germany: "🇩🇪",
   Italy: "🇮🇹",
+  Norway: "🇳🇴",
+  Sweden: "🇸🇪",
+  Denmark: "🇩🇰",
+  Austria: "🇦🇹",
 };
 
 export default function ContactPage() {
@@ -101,13 +108,13 @@ export default function ContactPage() {
                       </p>
                     </div>
                   ) : (
-                    <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-xl">
+                    <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-200 bg-[linear-gradient(160deg,#ffffff,rgba(26,26,26,0.07)_100%)] p-6 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.28)] transition-all hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.38)]">
                       <span
-                        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand/60 via-brand to-brand/60"
+                        className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-brand-dark/40 via-brand-dark to-brand-dark/40"
                         aria-hidden="true"
                       />
                       <span
-                        className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-brand/[0.06] blur-xl transition-opacity group-hover:bg-brand/[0.12]"
+                        className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-black/[0.1] blur-xl transition-opacity group-hover:bg-black/[0.18]"
                         aria-hidden="true"
                       />
                       <span className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-[#c81616] text-white shadow-md shadow-brand/20 transition-transform group-hover:scale-105">
@@ -144,13 +151,13 @@ export default function ContactPage() {
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {overseasPresence.map((country, i) => (
                 <ScrollReveal key={country} delay={Math.min(i * 30, 240)}>
-                  <div className="group relative overflow-hidden rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-xl">
+                  <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-[linear-gradient(160deg,#ffffff,rgba(26,26,26,0.07)_100%)] p-5 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.28)] transition-all hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.38)]">
                     <span
-                      className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-dark/50 via-brand-dark to-brand-dark/50"
+                      className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-brand-dark/40 via-brand-dark to-brand-dark/40"
                       aria-hidden="true"
                     />
                     <span
-                      className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-brand/[0.06] blur-xl transition-opacity group-hover:bg-brand/[0.12]"
+                      className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-black/[0.1] blur-xl transition-opacity group-hover:bg-black/[0.18]"
                       aria-hidden="true"
                     />
                     <div className="relative flex items-center gap-3">

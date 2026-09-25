@@ -10,7 +10,7 @@ export const aboutUs =
   "We're a full-spectrum logistics and supply chain partner, helping businesses move goods reliably across India and international markets. From warehousing and customs clearance to domestic transportation, courier, auto logistics, and sourcing, we handle the complexity of global and domestic movement so our clients can focus on running their business.";
 
 export const philosophy =
-  "At Transpeed Logistics, we believe logistics should never be one-size-fits-all. Every client's supply chain has its own pressures, timelines, and risks, so we build solutions around their business, not the other way around. Our team combines the energy of young, dynamic talent with the judgment of professionals who have spent decades solving hard logistics problems across India and globally. That mix is deliberate: it keeps us fast without losing rigor, and ambitious without losing reliability. We measure ourselves on outcomes our clients actually feel: lower landed costs, on-time delivery, and fewer surprises.";
+  "At Transpeed Logistics, we believe logistics should never be one-size-fits for all. Every client's supply chain has its own pressures, timelines, and risks, so we build solutions around their business, not the other way around. Our team combines the energy of young, dynamic talent with the judgment of professionals who have spent decades solving hard logistics problems across India and globally. This mix is deliberate: it keeps us fast without losing rigor, and ambitious without losing reliability. We measure ourselves on outcomes our clients actually feel: lower landed costs, on-time delivery, and fewer surprises.";
 
 export const whatDrivesUs = [
   {
@@ -70,6 +70,18 @@ export const missionCommitments = [
       "Building long-term relationships with our clients by understanding their business, not just their bookings, tailoring solutions instead of applying one-size-fits-all logistics.",
   },
 ];
+
+// CSR statement, supplied directly by Vignesh (2026-09-21). Rewritten from
+// "Transpeed Logistics Private Limited is actively involved..." into the
+// site's established we/our voice (per Gokul's brand rule: never
+// "Transpeed provides/offers..."), matching aboutUs's own opening line
+// above — meaning and every fact in the original sentence are unchanged.
+export const csrEyebrow = "Corporate Social Responsibility (CSR)";
+
+export const csrHeading = "Beyond Logistics: Our Commitment to Community";
+
+export const csrStatement =
+  "We're actively involved in multiple Corporate Social Responsibility (CSR) activities, reflecting our belief that sustainable business growth must go hand in hand with meaningful contribution to society.";
 
 export const coreValues = [
   {
