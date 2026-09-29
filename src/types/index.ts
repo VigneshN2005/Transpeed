@@ -106,3 +106,13 @@ export interface ChatbotNode {
   answer: string;
   sort_order: number;
 }
+
+// A real page on the site the chatbot can redirect a visitor straight to
+// (2026-09-29, per Vignesh: navigation-type questions — "terms and
+// conditions", "where's your privacy policy" — must redirect immediately,
+// not just answer with a link). See src/lib/chatbot/sitePages.ts.
+export interface SitePage {
+  label: string;
+  path: string;
+  keywords: string[];
+}

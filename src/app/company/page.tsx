@@ -271,12 +271,14 @@ export default function CompanyPage() {
                 className="hero-grid pointer-events-none absolute inset-0 opacity-70"
                 aria-hidden="true"
               />
+              {/* Mobile-scaled (2026-09-29, per Vignesh) — same fix as
+                  elsewhere on the site, scoped to this card. */}
               <div
-                className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-brand/25 blur-[90px]"
+                className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-brand/15 blur-[50px] sm:-right-20 sm:-top-24 sm:h-72 sm:w-72 sm:bg-brand/25 sm:blur-[90px]"
                 aria-hidden="true"
               />
               <div
-                className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-brand/10 blur-[90px]"
+                className="pointer-events-none absolute -bottom-10 -left-8 h-32 w-32 rounded-full bg-brand/10 blur-[50px] sm:-bottom-24 sm:-left-16 sm:h-64 sm:w-64 sm:blur-[90px]"
                 aria-hidden="true"
               />
 

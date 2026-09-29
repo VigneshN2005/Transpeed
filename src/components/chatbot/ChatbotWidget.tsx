@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { FAQEntry } from "@/types";
 
 // No-LLM FAQ chatbot widget. All matching happens server-side in
@@ -96,6 +98,57 @@ function ChatIcon() {
   );
 }
 
+// Turns markdown-style links inside a bot answer — [Terms and Conditions]
+// (/terms-conditions) — into real, clickable navigation instead of plain
+// text (2026-09-29, per Vignesh: typing "terms and conditions" or asking
+// where a page lives should redirect straight to it, not just describe
+// where it is). Staff write this same [label](/path) syntax straight into
+// an FAQ entry's answer in Admin > Chatbot — no code change needed per
+// page. An internal path (starts with "/") uses Next's <Link> so it
+// navigates within the app; anything else opens in a new tab.
+const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+function LinkifiedText({ text }: { text: string }) {
+  const parts: (string | { label: string; href: string })[] = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(MARKDOWN_LINK)) {
+    const [full, label, href] = match;
+    const start = match.index ?? 0;
+    if (start > lastIndex) parts.push(text.slice(lastIndex, start));
+    parts.push({ label, href });
+    lastIndex = start + full.length;
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+
+  return (
+    <>
+      {parts.map((part, i) =>
+        typeof part === "string" ? (
+          <Fragment key={i}>{part}</Fragment>
+        ) : part.href.startsWith("/") ? (
+          <Link
+            key={i}
+            href={part.href}
+            className="font-semibold text-brand underline decoration-brand/40 underline-offset-2 hover:text-brand-dark"
+          >
+            {part.label}
+          </Link>
+        ) : (
+          <a
+            key={i}
+            href={part.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-brand underline decoration-brand/40 underline-offset-2 hover:text-brand-dark"
+          >
+            {part.label}
+          </a>
+        )
+      )}
+    </>
+  );
+}
+
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -108,6 +161,7 @@ export default function ChatbotWidget() {
   // and gets re-evaluated from scratch, per activeNodeId returned by the API.
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const handler = () => setOpen(true);
@@ -130,6 +184,25 @@ export default function ChatbotWidget() {
     try {
       const data = await callChatbotApi({ action: "search", query: trimmed, activeNodeId });
       setActiveNodeId(typeof data.activeNodeId === "string" ? data.activeNodeId : null);
+
+      // Site-navigation intent — "terms and conditions", "where's your
+      // privacy policy" — redirects straight to the real page instead of
+      // just answering with a link (2026-09-29, per Vignesh: "it must
+      // redirect me to that thing"). The brief message + short delay
+      // before navigating is just enough for the visitor to register what
+      // happened; it isn't a pause waiting on anything.
+      if (data.redirect) {
+        const { label, path } = data.redirect as { label: string; path: string };
+        setMessages((prev) => [
+          ...prev,
+          { role: "bot", kind: "text", text: `Taking you to our ${label} page...` },
+        ]);
+        window.setTimeout(() => {
+          setOpen(false);
+          router.push(path);
+        }, 500);
+        return;
+      }
 
       if (data.refusal) {
         // Either a harmful/abusive topic (blocked before any FAQ search
@@ -275,7 +348,7 @@ export default function ChatbotWidget() {
                   <BotAvatar size="h-8 w-8" />
                   <div className="flex min-w-0 flex-col gap-2">
                     <p className="max-w-[15rem] rounded-2xl rounded-tl-md border-2 border-zinc-200 bg-white px-3.5 py-2 text-sm leading-relaxed text-zinc-700 shadow-sm">
-                      {m.text}
+                      <LinkifiedText text={m.text} />
                     </p>
                     {m.kind === "suggestions" && (
                       <div className="flex flex-wrap gap-1.5">

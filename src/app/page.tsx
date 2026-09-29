@@ -3,6 +3,7 @@ import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import HeroSlideshow from "@/components/home/HeroSlideshow";
+import VideoShowcase from "@/components/home/VideoShowcase";
 import { services } from "@/data/services";
 import { certifications } from "@/data/certifications";
 import { clients } from "@/data/clients";
@@ -20,8 +21,15 @@ export default function Home() {
       <section className="relative overflow-hidden bg-brand-dark text-white">
         {/* Decorative layer — glow blobs + route grid, purely visual */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute -top-32 right-[-10rem] h-[30rem] w-[30rem] rounded-full bg-brand/25 blur-[120px]" />
-          <div className="absolute -bottom-40 left-[-8rem] h-[26rem] w-[26rem] rounded-full bg-brand/10 blur-[110px]" />
+          {/* Blob sizes/opacity/blur scaled down below sm: (2026-09-29,
+              per Vignesh: "the redness... is more and not good" on
+              mobile) — the fixed rem sizes below were proportionally
+              huge on a ~390px viewport, so the glow read as a solid
+              reddish-brown wash over the whole hero instead of a
+              corner accent. sm: and up is the exact original desktop
+              treatment, untouched. */}
+          <div className="absolute -top-16 right-[-5rem] h-56 w-56 rounded-full bg-brand/15 blur-[70px] sm:-top-32 sm:right-[-10rem] sm:h-[30rem] sm:w-[30rem] sm:bg-brand/25 sm:blur-[120px]" />
+          <div className="absolute -bottom-20 left-[-4rem] h-48 w-48 rounded-full bg-brand/10 blur-[60px] sm:-bottom-40 sm:left-[-8rem] sm:h-[26rem] sm:w-[26rem] sm:blur-[110px]" />
           <div className="hero-grid absolute inset-0" />
         </div>
 
@@ -546,6 +554,72 @@ export default function Home() {
             )}
           </div>
         </Container>
+      </section>
+
+      {/* Corporate overview video — closing section of the home page
+          (2026-09-29, per Vignesh: put the video "at the bottom", not as
+          a hero, styled to match the rest of the site). Same header
+          pattern (eyebrow badge + display heading + accent rule) as the
+          Certifications / Our Clients sections above it, but on the dark
+          brand background so it reads as a deliberate closing "capstone"
+          moment rather than a stray embed at the end of a light page. See
+          VideoShowcase.tsx for the player itself and the source notes.
+
+          Background upgraded (2026-09-29, per Vignesh: "its plane... the
+          background of the video") from a single flat glow to the same
+          layered treatment as the hero — `.hero-grid` route texture plus
+          three staggered brand-red/white glow blobs at different corners
+          and sizes — so this closing section reads as richly as the hero
+          it mirrors instead of a flatter afterthought. */}
+      <section className="relative overflow-hidden bg-brand-dark py-20 text-white">
+        <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          {/* Same mobile-scaling fix as the hero above, applied here too
+              (2026-09-29, per Vignesh). */}
+          <div className="absolute -top-16 -left-10 h-52 w-52 rounded-full bg-brand/10 blur-[70px] sm:-top-40 sm:-left-24 sm:h-[28rem] sm:w-[28rem] sm:bg-brand/20 sm:blur-[130px]" />
+          <div className="absolute top-1/3 right-[-6rem] h-48 w-48 rounded-full bg-brand/10 blur-[60px] sm:right-[-12rem] sm:h-[26rem] sm:w-[26rem] sm:blur-[130px]" />
+          <div className="absolute -bottom-20 left-1/3 h-44 w-44 -translate-x-1/2 rounded-full bg-white/[0.05] blur-[60px] sm:-bottom-44 sm:h-[24rem] sm:w-[24rem] sm:blur-[120px]" />
+        </div>
+        {/* Wider than the shared `Container` (max-w-6xl) on purpose —
+            three rounds of "make the video bigger" from Vignesh (2026-09-29:
+            "not that small", then "a bit more", then "still increased [it
+            more]"), so this went from max-w-7xl/0.85:1.15 to
+            max-w-[96rem]/0.8:1.2 to this: max-w-[110rem] (1760px) with the
+            grid tilted hard toward the video (0.7fr text / 1.3fr video) and
+            a tighter gap-10 reclaiming a little more width for it too. If
+            this still reads small, the next lever is dropping the text
+            column's width share further rather than nudging by degrees. */}
+        <div className="relative mx-auto w-full max-w-[110rem] px-6">
+          {/* Split layout (2026-09-29, per Vignesh: "put the content on the
+              left and video on the right") — same grid device as the hero
+              (text column + media column, vertically centered) rather than
+              the centered-header-then-full-width-media pattern used by the
+              lighter sections above, so this closing section visually
+              rhymes with the hero it's meant to mirror. Text left-aligned
+              to match; stacks to video-below-text on mobile/tablet since
+              lg:grid-cols only kicks in at the lg breakpoint. */}
+          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
+            <Reveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-brand backdrop-blur-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M23 7l-7 5 7 5V7z" />
+                  <rect x="1" y="5" width="15" height="14" rx="2" />
+                </svg>
+                See Us In Motion
+              </span>
+              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Transpeed, In Motion
+              </h2>
+              <div className="mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-brand to-brand/20" aria-hidden="true" />
+              <p className="mt-4 max-w-md text-base text-white/70">
+                A closer look at the people, sites, and shipments behind every delivery we make.
+              </p>
+            </Reveal>
+            <Reveal variant="image">
+              <VideoShowcase />
+            </Reveal>
+          </div>
+        </div>
       </section>
     </>
   );

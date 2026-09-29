@@ -2,32 +2,35 @@ import { NextRequest, NextResponse } from "next/server";
 import { createRouteClient } from "@/lib/supabase/route-client";
 import { isHarmfulQuery, isInDomainQuery, matchSmallTalk } from "@/lib/chatbot/guardrails";
 import { matchFaq, matchTreeRoot, matchTreeChild } from "@/lib/chatbot/match";
+import { matchSitePage } from "@/lib/chatbot/sitePages";
 import type { FAQEntry, ChatbotNode } from "@/types";
 
 // No-LLM chatbot brain. Every question is handled by one of, in order:
 //   1. Harmful/abusive topic         -> hard refusal, nothing else runs
 //   2. Greeting/small talk           -> canned reply, common sense only
-//   3. An active decision-tree branch (activeNodeId sent by the client) ->
+//   3. Site-navigation intent (matchSitePage) -> immediate redirect to the
+//      real page, before any tree/FAQ matching runs.
+//   4. An active decision-tree branch (activeNodeId sent by the client) ->
 //      does the follow-up match one of THIS node's next-question options?
 //      If yes, descend the tree (give that node's answer + its own
 //      children as new options). If no, the branch is "cut" and the query
 //      falls through to a fresh top-level evaluation below — it may start
 //      a different tree, land as a flat FAQ, or reach the same
 //      no-match/out-of-domain outcomes as any other fresh question.
-//   4. A fresh top-level match against a pipeline's root trigger (Quotation,
+//   5. A fresh top-level match against a pipeline's root trigger (Quotation,
 //      Booking, Customs Clearance, Vendor/Agent Onboarding, Warehousing &
 //      Distribution, Sourcing & Procurement) -> give that pipeline's
 //      overview answer plus its first-level next-question options.
-//   5. A confident flat FAQ match (company info, individual service facts,
+//   6. A confident flat FAQ match (company info, individual service facts,
 //      site navigation, contact) via matchFaq -> direct answer.
-//   6. Not in Transpeed's logistics domain at all -> refusal, no handoff
+//   7. Not in Transpeed's logistics domain at all -> refusal, no handoff
 //      offered. Checked here — after a confident match, before
 //      suggestions — because a handful of loosely-related "did you mean"
 //      suggestions almost always exist somewhere in the FAQ table even for
 //      a genuinely off-topic question; the in-domain check is what stops
 //      those weak suggestions from being shown for something like "what's
 //      the weather today."
-//   7. In-domain, no confident match:
+//   8. In-domain, no confident match:
 //      a. a few plausible "did you mean" suggestions -> shown as options
 //      b. nothing close enough at all -> a genuine knowledge-base gap. The
 //         widget logs it (POST { action: "log-unanswered" }) so it reaches
@@ -70,6 +73,15 @@ export async function POST(req: NextRequest) {
     const smallTalk = matchSmallTalk(query);
     if (smallTalk) {
       return NextResponse.json({ smallTalk: true, text: smallTalk, activeNodeId: null });
+    }
+
+    // Site-navigation intent ("terms and conditions", "where's your
+    // privacy policy") wins immediately, before any tree/FAQ matching —
+    // the visitor gets redirected straight to the real page instead of
+    // being told about it (2026-09-29, per Vignesh).
+    const sitePage = matchSitePage(query);
+    if (sitePage) {
+      return NextResponse.json({ redirect: sitePage, activeNodeId: null });
     }
 
     const { data: nodeRows, error: nodeError } = await supabase

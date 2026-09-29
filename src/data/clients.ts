@@ -9,7 +9,6 @@ import type { ClientLogo } from "@/types";
 // removed entirely — it never had a confirmed logo (a web search only
 // turned up an unrelated, defunct company of the same name), and Vignesh
 // has now dropped it as a client rather than waiting on Gokul for one.
-// C6 Logistic Networks' logo arrived separately in the shared "logo" folder.
 // The 8 entries below (Tata Power through BGR Energy) are real client logos
 // pulled directly from the current live transpeedlogistics.com site's "Our
 // Clients" carousel — these replace the earlier "Sample Client A/B"
@@ -18,7 +17,6 @@ import type { ClientLogo } from "@/types";
 // excluded. If Gokul later sends official/updated logo files for any of
 // these, swap the file in place.
 export const clients: ClientLogo[] = [
-  { name: "C6 Logistic Networks", logo: "/images/clients/c6-logistic-networks.jpg" },
   { name: "Rossell Techsys", logo: "/images/clients/rossell-techsys.jpg" },
   { name: "LTTS", logo: "/images/clients/ltts.png" },
   { name: "Tata Power", logo: "/images/clients/tata-power.png" },

@@ -19,7 +19,10 @@ export default function PageHero({
   return (
     <section className="relative overflow-hidden bg-brand-dark text-white">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute -top-28 right-[-10rem] h-[26rem] w-[26rem] rounded-full bg-brand/20 blur-[110px]" />
+        {/* Mobile-scaled (2026-09-29, per Vignesh) — same fix as the
+            homepage hero: this one glow reaches every interior page
+            (Company, Services, People, Locations, Announcements). */}
+        <div className="absolute -top-14 right-[-5rem] h-48 w-48 rounded-full bg-brand/10 blur-[60px] sm:-top-28 sm:right-[-10rem] sm:h-[26rem] sm:w-[26rem] sm:bg-brand/20 sm:blur-[110px]" />
         <div className="hero-grid absolute inset-0" />
       </div>
 

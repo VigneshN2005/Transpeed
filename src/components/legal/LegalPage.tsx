@@ -6,10 +6,15 @@ import Container from "@/components/ui/Container";
 // prose styling so none of the three drift from the others.
 export default function LegalPage({
   title,
+  subtitle,
   lastUpdated,
   children,
 }: {
   title: string;
+  // Optional second line under the title (2026-09-29, per Vignesh's new
+  // Terms & Conditions doc: "Applicable to Domestic and International") —
+  // left unset, this renders exactly as before for the other legal pages.
+  subtitle?: string;
   lastUpdated: string;
   children: ReactNode;
 }) {
@@ -19,6 +24,11 @@ export default function LegalPage({
       <h1 className="mt-2 text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
         {title}
       </h1>
+      {subtitle && (
+        <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-zinc-400">
+          {subtitle}
+        </p>
+      )}
       <p className="mt-3 text-sm text-zinc-500">Last updated: {lastUpdated}</p>
 
       <div className="mt-10 space-y-8">{children}</div>

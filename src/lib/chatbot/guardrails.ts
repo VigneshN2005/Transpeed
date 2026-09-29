@@ -68,6 +68,15 @@ const DOMAIN_VOCAB: string[] = [
   "hours", "working days", "business hours", "timing", "schedule", "open",
   "closing", "holiday", "payment", "refund", "cancel", "cancellation",
   "discount", "policy", "minimum order", "bulk shipment",
+  // Site-navigation / legal-page terms (2026-09-29, per Vignesh: asking
+  // for "terms and conditions" or where a page lives was wrongly hitting
+  // the out-of-domain refusal instead of a real answer). These don't share
+  // logistics vocabulary but are still legitimate questions about
+  // Transpeed's own site.
+  "terms and conditions", "terms of service", "terms", "t&c",
+  "privacy policy", "privacy", "cookies policy", "cookie policy", "cookies",
+  "sitemap", "site map", "careers", "vacancy", "vacancies", "team", "people",
+  "website", "webpage", "page",
 ];
 
 export function isInDomainQuery(query: string): boolean {

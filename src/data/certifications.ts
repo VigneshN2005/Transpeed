@@ -22,6 +22,10 @@ import type { Certification } from "@/types";
 // day, per Vignesh sending its logo directly — not previously mentioned in
 // Gokul's doc or found on the live site.
 export const certifications: Certification[] = [
+  // C6 Logistic Networks (moved 2026-09-29, per Vignesh: it's a logistics
+  // network/alliance membership, not a client, so it belongs here instead
+  // of the "Our Clients" carousel).
+  { name: "C6 Logistic Networks", logo: "/images/certifications/c6-logistic-networks.jpg" },
   { name: "AEO", logo: "/images/certifications/aeo.png" },
   { name: "PCA", logo: "/images/certifications/pca.png" },
   { name: "Indo American Chamber of Commerce", logo: "/images/certifications/indo-american-chamber.png" },
