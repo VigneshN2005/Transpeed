@@ -80,6 +80,21 @@
    changes — it only becomes invisible where a section explicitly sets its
    own solid background (e.g. the dark hero, the zinc-dark footer), which is
    the correct behaviour there. */
+/* Defensive safeguard (2026-09-29, per Vignesh's mobile-alignment audit):
+   a single decorative element missing overflow clipping (found and fixed
+   in the "Our Services" section of the home page) was able to stretch the
+   whole document wider than the viewport on mobile, dragging the fixed
+   chatbot button off-screen along with it. This belt-and-suspenders rule
+   stops that class of bug from ever visibly breaking the page again --
+   it clips any stray horizontal overflow at the document edge instead of
+   letting it widen the scrollable area. It is not a fix for the root
+   cause (each offending element should still get its own overflow-hidden,
+   as above) -- it is just insurance against the next one.
+*/
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--background);
   background-image: url("/images/logo/transpeed-watermark-tile.png");

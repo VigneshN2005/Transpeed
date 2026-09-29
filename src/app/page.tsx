@@ -378,7 +378,23 @@ export default function Home() {
               corner so only a soft, even highlight shows, letting the
               near-black glass itself carry the card rather than a red
               wash on top of it. */}
-          <div className="relative mt-10">
+          {/* FOUND 2026-09-29 auditing "the entire website is still... not
+              properly aligned" (per Vignesh): this wrapper was the one
+              actual cause of the horizontal-scroll bug on mobile (the pink
+              strip visible on the right edge of the hero in his
+              screenshot) — these three glow blobs sit at negative
+              offsets (up to -bottom-16/-left-10, 320px boxes) with no
+              overflow clipping on their container, unlike every other
+              decorative-glow spot on the site (hero, PageHero, video
+              section, the Company page's offices card, ServiceProcess),
+              which all already clip theirs. Confirmed via the browser's
+              own scrollWidth/clientWidth at a real 375px viewport: 78px of
+              page-wide overflow, traced to exactly this div. `overflow-hidden`
+              added below fixes it without changing how the glows look on
+              desktop — they were only ever meant to be soft background
+              accents, not something that was supposed to bleed past this
+              box's edges anyway. */}
+          <div className="relative mt-10 overflow-hidden">
             <div aria-hidden="true" className="pointer-events-none absolute -top-16 -left-10 h-80 w-80 rounded-full bg-brand/20 blur-3xl" />
             <div aria-hidden="true" className="pointer-events-none absolute top-1/3 right-4 h-72 w-72 rounded-full bg-brand/16 blur-3xl" />
             <div aria-hidden="true" className="pointer-events-none absolute -bottom-16 left-1/3 h-80 w-80 rounded-full bg-brand-dark/10 blur-3xl" />
@@ -467,7 +483,7 @@ export default function Home() {
               cert.logo ? (
                 <Reveal key={cert.name} variant="image" delay={Math.min(i * 40, 320)}>
                 <div
-                  className="group flex h-28 w-44 items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)]"
+                  className="group flex h-24 w-[calc(50%-10px)] items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28 sm:w-44"
                   title={cert.name}
                 >
                   <Image
@@ -530,7 +546,7 @@ export default function Home() {
               client.logo ? (
                 <Reveal key={client.name} variant="image" delay={Math.min(i * 40, 320)}>
                 <div
-                  className="group flex h-28 w-48 items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)]"
+                  className="group flex h-24 w-[calc(50%-10px)] items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28 sm:w-48"
                   title={client.name}
                 >
                   <Image
