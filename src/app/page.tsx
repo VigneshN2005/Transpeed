@@ -477,13 +477,27 @@ export default function Home() {
           </Reveal>
           {/* Logo tiles staggered in on scroll too (2026-09-14, per
               Vignesh), capped stagger so a wall of ~13 logos doesn't take
-              forever to finish settling in. */}
+              forever to finish settling in.
+
+              2026-09-29 mobile fix: the responsive width used to live on
+              the tile <div> itself, but that div's parent is the Reveal
+              wrapper, which has no width of its own -- a percentage width
+              can't resolve against an "auto" parent, so on mobile the
+              tiles rendered as garbled, inconsistent-width slivers instead
+              of a clean 2-column grid. Moved the width classes onto the
+              Reveal wrapper (which IS a direct child of this flex row) and
+              left the tile itself at w-full so it just fills its slot. */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
             {certifications.map((cert, i) =>
               cert.logo ? (
-                <Reveal key={cert.name} variant="image" delay={Math.min(i * 40, 320)}>
+                <Reveal
+                  key={cert.name}
+                  variant="image"
+                  delay={Math.min(i * 40, 320)}
+                  className="w-[calc(50%-10px)] sm:w-44"
+                >
                 <div
-                  className="group flex h-24 w-[calc(50%-10px)] items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28 sm:w-44"
+                  className="group flex h-24 w-full items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28"
                   title={cert.name}
                 >
                   <Image
@@ -540,13 +554,20 @@ export default function Home() {
             </p>
           </Reveal>
           {/* Logo tiles staggered in on scroll too (2026-09-14, per
-              Vignesh), same capped stagger as the Certifications wall. */}
+              Vignesh), same capped stagger as the Certifications wall.
+              Same 2026-09-29 mobile-width fix as above -- width moved onto
+              the Reveal wrapper, tile itself is w-full. */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
             {clients.map((client, i) =>
               client.logo ? (
-                <Reveal key={client.name} variant="image" delay={Math.min(i * 40, 320)}>
+                <Reveal
+                  key={client.name}
+                  variant="image"
+                  delay={Math.min(i * 40, 320)}
+                  className="w-[calc(50%-10px)] sm:w-48"
+                >
                 <div
-                  className="group flex h-24 w-[calc(50%-10px)] items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28 sm:w-48"
+                  className="group flex h-24 w-full items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28"
                   title={client.name}
                 >
                   <Image
