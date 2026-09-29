@@ -652,7 +652,14 @@ export default function Home() {
                 A closer look at the people, sites, and shipments behind every delivery we make.
               </p>
             </Reveal>
-            <Reveal variant="image">
+            {/* 2026-09-29, per Vignesh: bigger video on mobile too. The
+                video already runs full-width inside the section's px-6
+                gutter, so the only way to meaningfully grow it on a phone
+                screen is to bleed past that gutter -- pull the card out to
+                the section's own edges (-mx-6) below the sm breakpoint,
+                then hand the gutter straight back (sm:mx-0) once the
+                two-column layout has room to spare. */}
+            <Reveal variant="image" className="-mx-6 sm:mx-0">
               <VideoShowcase />
             </Reveal>
           </div>
