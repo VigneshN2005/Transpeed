@@ -1,24 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Container from "@/components/ui/Container";
 import { createClient } from "@/lib/supabase/client";
 import AnnouncementsPanel from "@/components/admin/AnnouncementsPanel";
 import ChatbotPanel from "@/components/admin/ChatbotPanel";
+import EnquiriesPanel from "@/components/admin/EnquiriesPanel";
 
-type Tab = "announcements" | "chatbot";
+type Tab = "enquiries" | "announcements" | "chatbot";
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: "announcements", label: "Client Announcements" },
+  { id: "enquiries", label: "Enquiries" },
+  { id: "announcements", label: "News & Updates" },
   { id: "chatbot", label: "Chatbot" },
 ];
 
 // Reachable only for a signed-in session — middleware.ts redirects
-// anyone else back to /admin before this ever renders.
+// anyone else back to the (private) admin login before this ever renders.
 export default function AdminDashboardPage() {
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>("announcements");
+  // Private admin address (see middleware.ts): go "up" from /…/dashboard
+  // to the login page without spelling the address out in browser code.
+  const pathname = usePathname();
+  const [tab, setTab] = useState<Tab>("enquiries");
   const [email, setEmail] = useState<string | null>(null);
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -31,12 +36,14 @@ export default function AdminDashboardPage() {
     setLoggingOut(true);
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/admin");
+    router.push(pathname.replace(/\/dashboard\/?$/, "") || "/");
     router.refresh();
   }
 
   return (
     <Container className="py-12">
+      {/* marks this as an admin page: hides the public menu/footer and skips site animations */}
+      <span data-admin-area hidden />
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-6">
         <div>
           <h1 className="text-xl font-bold text-brand-dark">Admin</h1>
@@ -70,6 +77,7 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="mt-8">
+        {tab === "enquiries" && <EnquiriesPanel />}
         {tab === "announcements" && <AnnouncementsPanel />}
         {tab === "chatbot" && <ChatbotPanel />}
       </div>

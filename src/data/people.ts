@@ -65,6 +65,13 @@ export const people: TeamMember[] = [
         detail:
           "Started as Assistant Manager in Karnataka, playing a key role in establishing Thomas Cook's logistics operations nationwide, rising to General Manager, India.",
       },
+      // Added 2026-10-03, per Vignesh: listed below Thomas Cook as a normal
+      // entry (he asked for no special highlight).
+      {
+        org: "Indian Institute of Management, Ahmedabad",
+        period: "1990",
+        detail: "— 3-Tier Programme of Management Development",
+      },
       {
         org: "Hecny Freight India (P) Ltd",
         period: "1992–1999",

@@ -51,9 +51,9 @@ export const SITE_PAGES: SitePage[] = [
     keywords: ["people page", "our team", "team page", "leadership team", "management team"],
   },
   {
-    label: "Client Announcements",
+    label: "News & Updates",
     path: "/announcements",
-    keywords: ["client announcements", "announcements page", "news page", "updates page"],
+    keywords: ["news and updates", "news & updates", "client announcements", "announcements page", "news page", "updates page"],
   },
   {
     label: "Home",

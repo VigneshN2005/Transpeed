@@ -21,15 +21,15 @@ export default function LegalPage({
   return (
     <Container className="max-w-3xl py-20">
       <p className="text-sm font-semibold uppercase tracking-wide text-brand">Legal</p>
-      <h1 className="mt-2 text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
+      <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
         {title}
       </h1>
       {subtitle && (
-        <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-zinc-400">
+        <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-white/50">
           {subtitle}
         </p>
       )}
-      <p className="mt-3 text-sm text-zinc-500">Last updated: {lastUpdated}</p>
+      <p className="mt-3 text-sm text-white/60">Last updated: {lastUpdated}</p>
 
       <div className="mt-10 space-y-8">{children}</div>
     </Container>
@@ -47,8 +47,8 @@ export function LegalSection({
 }) {
   return (
     <section>
-      <h2 className="text-lg font-semibold text-brand-dark">{heading}</h2>
-      <div className="mt-2 space-y-3 text-sm leading-relaxed text-zinc-600">{children}</div>
+      <h2 className="text-lg font-semibold text-white">{heading}</h2>
+      <div className="mt-2 space-y-3 text-sm leading-relaxed text-white/70">{children}</div>
     </section>
   );
 }

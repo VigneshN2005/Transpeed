@@ -5,7 +5,7 @@ import { contactChannels } from "@/data/contact";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 bg-brand-dark text-zinc-300">
+    <footer className="border-t border-white/10 bg-brand-dark text-zinc-300">
       <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Logo variant="dark" />
@@ -19,7 +19,7 @@ export default function Footer() {
             <li><Link href="/services" className="hover:text-brand">Services</Link></li>
             <li><Link href="/company" className="hover:text-brand">Company</Link></li>
             <li><Link href="/people" className="hover:text-brand">People</Link></li>
-            <li><Link href="/announcements" className="hover:text-brand">Client Announcements</Link></li>
+            <li><Link href="/announcements" className="hover:text-brand">News & Updates</Link></li>
           </ul>
         </div>
         <div>

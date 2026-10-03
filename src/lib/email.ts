@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { ENQUIRY_EMAIL } from "@/data/enquiry";
 
 // Sends the chatbot's "couldn't answer this, here's who asked and what they
 // asked" notification straight to the team's inbox. Uses Resend's own
@@ -49,6 +50,48 @@ export async function sendFollowUpEmail(details: {
     ].join("\n"),
   });
 
+  if (error) {
+    throw new Error(error.message || "Resend rejected the email");
+  }
+}
+
+// Quote / enquiry requests from the "Get a Quote" form (2026-10-03, per
+// Vignesh). Goes to ENQUIRY_EMAIL (data/enquiry.ts), with Reply-To set to
+// the customer so the team can answer straight from their inbox.
+export async function sendEnquiryEmail(e: {
+  service: string;
+  name: string;
+  phone: string;
+  email: string;
+  company: string;
+  origin: string;
+  destination: string;
+  message: string;
+}) {
+  const resend = getResendClient();
+  const lines = [
+    `New quote request from the website — ${e.service}`,
+    "",
+    `Service: ${e.service}`,
+    `Name: ${e.name}`,
+    `Phone: ${e.phone}`,
+    `Email: ${e.email}`,
+    `Company: ${e.company || "(not given)"}`,
+    `From: ${e.origin || "(not given)"}`,
+    `To: ${e.destination || "(not given)"}`,
+    "",
+    "Details:",
+    e.message || "(none)",
+    "",
+    "Reply to this email to answer the customer directly.",
+  ];
+  const { error } = await resend.emails.send({
+    from: "Transpeed Website <onboarding@resend.dev>",
+    to: ENQUIRY_EMAIL,
+    replyTo: e.email,
+    subject: `New quote request: ${e.service} — ${e.name}`,
+    text: lines.join("\n"),
+  });
   if (error) {
     throw new Error(error.message || "Resend rejected the email");
   }

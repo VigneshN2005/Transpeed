@@ -5,9 +5,9 @@ export const companyEmail = "info@transpeedlogistics.com";
 // Real addresses from Gokul's "TP - Website.docx" + follow-up
 // "TP - Website1.docx" (which supplied the Mysore address). Chennai: he
 // separately confirmed using the "present" office address, not the new one
-// that was also shared. Pune and Kanpur (the latter added 2026-09-25, per
-// Vignesh) are still genuinely pending — new offices, listed as branches
-// for now with their addresses to follow.
+// that was also shared. Pune (new office) is still pending, listed as a branch with its
+// address to follow. Hyderabad (added 2026-09-25) got its address and cell
+// number on 2026-10-03, per Vignesh.
 export const locations: Location[] = [
   {
     city: "Bangalore",
@@ -43,14 +43,23 @@ export const locations: Location[] = [
     address: "#23, 10th Main, 3rd Cross, F Block, JP Nagar, Mysore – 570008",
   },
   { city: "Pune", address: "New branch office, address to follow", isBranch: true },
-  { city: "Kanpur", address: "New branch office, address to follow", isBranch: true },
+  {
+    city: "Hyderabad",
+    address: "DN.182, Devi Nagar, Neredmet, Malkaigiri, Secunderabad – 500056",
+    phone: "+91 80969 97650",
+    isBranch: true,
+  },
 ];
 
 // Overseas Sourcing & Procurement offices — country/region names only, per
 // Gokul. Original 5 (USA, Singapore, Germany, Italy, Europe) plus a
 // 2026-09-21 addition from Vignesh: 6 broader regions (Far East, Central
 // Asia, South Asia, South West Asia, Middle East, Africa) and 4 more
-// specific European countries (Norway, Sweden, Denmark, Austria).
+// specific European countries (Norway, Sweden, Denmark, Austria). 2026-10-03
+// addition from Vignesh: 15 more countries/regions, marked on the map via
+// the same click-to-get-coordinates tool (see GlobalNetworkMap.tsx header).
+// Denmark and South West Asia were on his list again but are already
+// above, so they weren't duplicated here.
 export const overseasPresence = [
   "USA",
   "Singapore",
@@ -67,6 +76,21 @@ export const overseasPresence = [
   "Sweden",
   "Denmark",
   "Austria",
+  "Australia",
+  "New Zealand",
+  "South Africa",
+  "Japan",
+  "Korea",
+  "Sri Lanka",
+  "Canada",
+  "Mexico",
+  "Russia",
+  "China",
+  "Philippines",
+  "Iran",
+  "Iraq",
+  "Saudi Arabia",
+  "South East Asia",
 ];
 
 // Phone and WhatsApp share one number, the temporary single point of

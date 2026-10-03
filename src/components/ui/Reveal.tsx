@@ -53,22 +53,25 @@ export default function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -15% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  // Content now rises gently into place from just below, with the site-wide
+  // premium easing (2026-10-02, per Vignesh: premium text & content motion).
+  // Previously it settled down from above in 420ms.
   const hidden =
     variant === "image"
-      ? "opacity-0 -translate-y-5 scale-[0.97]"
-      : "opacity-0 -translate-y-4";
+      ? "opacity-0 translate-y-6 scale-[0.97]"
+      : "opacity-0 translate-y-5";
 
   return (
     <div
       ref={ref}
       style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
-      className={`transition-all duration-[420ms] ease-out ${
+      className={`transition-all duration-[1200ms] ease-[cubic-bezier(0.2,0.75,0.2,1)] ${
         visible ? "opacity-100 translate-y-0 scale-100" : hidden
       } ${className}`}
     >

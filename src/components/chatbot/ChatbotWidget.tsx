@@ -129,7 +129,7 @@ function LinkifiedText({ text }: { text: string }) {
           <Link
             key={i}
             href={part.href}
-            className="font-semibold text-brand underline decoration-brand/40 underline-offset-2 hover:text-brand-dark"
+            className="font-semibold text-brand underline decoration-brand/40 underline-offset-2 hover:text-white"
           >
             {part.label}
           </Link>
@@ -139,7 +139,7 @@ function LinkifiedText({ text }: { text: string }) {
             href={part.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-brand underline decoration-brand/40 underline-offset-2 hover:text-brand-dark"
+            className="font-semibold text-brand underline decoration-brand/40 underline-offset-2 hover:text-white"
           >
             {part.label}
           </a>
@@ -295,7 +295,7 @@ export default function ChatbotWidget() {
         // 2*1rem side offset would overflow); max-h keeps it from
         // outgrowing short mobile viewports the same way. Per Vignesh's
         // 2026-09-14 mobile/desktop-fit pass.
-        <div className="flex h-[30rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border-2 border-brand/30 bg-white shadow-[0_30px_70px_-25px_rgba(0,0,0,0.45),0_14px_34px_-18px_rgba(255,49,49,0.3)] max-h-[calc(100vh-7rem)]">
+        <div className="flex h-[30rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-3xl border-2 border-brand/30 bg-brand-dark shadow-[0_30px_70px_-25px_rgba(0,0,0,0.6),0_14px_34px_-18px_rgba(255,49,49,0.3)] max-h-[calc(100vh-7rem)]">
           {/* Header — brand gradient with a bot avatar + live-status dot,
               replacing the plain white/text-only header. */}
           <div className="relative overflow-hidden bg-gradient-to-br from-brand-dark via-[#241414] to-brand-dark px-4 py-4">
@@ -331,7 +331,7 @@ export default function ChatbotWidget() {
             </div>
           </div>
 
-          <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-zinc-50/60 p-4">
+          <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-black/20 p-4">
             {messages.map((m, i) => {
               if (m.role === "user") {
                 return (
@@ -347,7 +347,7 @@ export default function ChatbotWidget() {
                 <div key={i} className="flex items-start gap-2">
                   <BotAvatar size="h-8 w-8" />
                   <div className="flex min-w-0 flex-col gap-2">
-                    <p className="max-w-[15rem] rounded-2xl rounded-tl-md border-2 border-zinc-200 bg-white px-3.5 py-2 text-sm leading-relaxed text-zinc-700 shadow-sm">
+                    <p className="max-w-[15rem] rounded-2xl rounded-tl-md border-2 border-white/10 bg-white/5 px-3.5 py-2 text-sm leading-relaxed text-white/80 shadow-sm">
                       <LinkifiedText text={m.text} />
                     </p>
                     {m.kind === "suggestions" && (
@@ -357,7 +357,7 @@ export default function ChatbotWidget() {
                             key={s.id}
                             type="button"
                             onClick={() => askQuestion(s.question)}
-                            className="rounded-full border-2 border-brand bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand-dark shadow-sm transition-colors hover:bg-brand hover:text-white"
+                            className="rounded-full border-2 border-brand bg-brand/10 px-2.5 py-1 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-brand hover:text-white"
                           >
                             {s.question}
                           </button>
@@ -371,7 +371,7 @@ export default function ChatbotWidget() {
                             key={o.id}
                             type="button"
                             onClick={() => askQuestion(o.label)}
-                            className="rounded-full border-2 border-brand bg-brand/5 px-2.5 py-1 text-xs font-semibold text-brand-dark shadow-sm transition-colors hover:bg-brand hover:text-white"
+                            className="rounded-full border-2 border-brand bg-brand/10 px-2.5 py-1 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-brand hover:text-white"
                           >
                             {o.label}
                           </button>
@@ -389,16 +389,16 @@ export default function ChatbotWidget() {
             {sending && (
               <div className="flex items-start gap-2">
                 <BotAvatar size="h-8 w-8" />
-                <span className="flex items-center gap-1 rounded-2xl rounded-tl-md border-2 border-zinc-200 bg-white px-3.5 py-2.5 shadow-sm">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400" />
+                <span className="flex items-center gap-1 rounded-2xl rounded-tl-md border-2 border-white/10 bg-white/5 px-3.5 py-2.5 shadow-sm">
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/40 [animation-delay:-0.3s]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/40 [animation-delay:-0.15s]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/40" />
                 </span>
               </div>
             )}
           </div>
 
-          <div className="border-t border-zinc-100 bg-white p-3">
+          <div className="border-t border-white/10 bg-brand-dark p-3">
             <div className="relative">
               <div className="mb-2.5 flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none]">
                 {QUICK_REPLIES.map((q) => (
@@ -407,7 +407,7 @@ export default function ChatbotWidget() {
                     type="button"
                     onClick={() => askQuestion(q.query)}
                     disabled={sending}
-                    className="flex shrink-0 items-center gap-1.5 rounded-full border-2 border-brand/40 bg-white px-2.5 py-1.5 text-xs font-semibold text-brand-dark shadow-sm transition-colors hover:border-brand hover:bg-brand hover:text-white disabled:opacity-60"
+                    className="flex shrink-0 items-center gap-1.5 rounded-full border-2 border-brand/40 bg-white/5 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:border-brand hover:bg-brand hover:text-white disabled:opacity-60"
                   >
                     <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                       <path d={q.icon} />
@@ -418,7 +418,7 @@ export default function ChatbotWidget() {
               </div>
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 right-0 mb-2.5 w-8 bg-gradient-to-l from-white to-transparent"
+                className="pointer-events-none absolute inset-y-0 right-0 mb-2.5 w-8 bg-gradient-to-l from-brand-dark to-transparent"
               />
             </div>
             <form
@@ -426,13 +426,13 @@ export default function ChatbotWidget() {
                 e.preventDefault();
                 askQuestion(input);
               }}
-              className="flex items-center gap-2 rounded-full border-2 border-zinc-300 bg-white p-1 pl-4 shadow-sm transition-all focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/20"
+              className="flex items-center gap-2 rounded-full border-2 border-white/15 bg-white/5 p-1 pl-4 shadow-sm transition-all focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/20"
             >
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type your question..."
-                className="flex-1 bg-transparent py-1.5 text-sm text-zinc-800 placeholder:text-zinc-400 focus:outline-none"
+                className="flex-1 bg-transparent py-1.5 text-sm text-white placeholder:text-white/40 focus:outline-none"
               />
               <button
                 type="submit"

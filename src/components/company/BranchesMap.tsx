@@ -18,7 +18,7 @@ const COORDS: Record<string, [number, number]> = {
   Mumbai: [19.076, 72.8777],
   Mysore: [12.2958, 76.6394],
   Pune: [18.5204, 73.8567],
-  Kanpur: [26.4499, 80.3319],
+  Hyderabad: [17.385, 78.4867],
 };
 
 declare global {
@@ -135,10 +135,10 @@ export default function BranchesMap() {
       <div className="relative h-72 w-full overflow-hidden rounded-3xl shadow-[0_25px_50px_-20px_rgba(0,0,0,0.25)] ring-1 ring-black/5 sm:h-[420px]">
         <div ref={mapRef} className="h-full w-full" />
         {!leafletReady && (
-          <div className="absolute inset-0 flex items-center justify-center gap-2.5 bg-zinc-50 text-sm text-zinc-500">
+          <div className="absolute inset-0 flex items-center justify-center gap-2.5 bg-brand-dark/50 text-sm text-white/60">
             <span
               aria-hidden="true"
-              className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-brand"
+              className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-brand"
             />
             Loading map…
           </div>

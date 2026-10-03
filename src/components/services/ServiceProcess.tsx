@@ -20,7 +20,7 @@ export default function ServiceProcess({
   const hasIcons = steps.some((s) => s.icon);
 
   return (
-    <div className="mt-6 border-t border-zinc-100 pt-5">
+    <div className="mt-6 border-t border-white/10 pt-5">
       {/* Toggle restyle (2026-09-25, per Vignesh).
           Round 1: "make the see the full 6 process look like proper
           clickable glass effect button" — was plain text with a thin
@@ -40,13 +40,13 @@ export default function ServiceProcess({
         aria-expanded={open}
         className={`group relative flex w-full items-center justify-between gap-3 overflow-hidden rounded-xl border px-5 py-3.5 text-left backdrop-blur-md backdrop-saturate-150 transition-all duration-300 ${
           open
-            ? "border-brand/40 bg-brand-dark/90 shadow-[0_14px_32px_-10px_rgba(255,49,49,0.3),0_6px_16px_-4px_rgba(0,0,0,0.35)]"
-            : "border-white/10 bg-brand-dark/80 shadow-[0_8px_22px_-8px_rgba(0,0,0,0.3)] hover:border-brand/30 hover:bg-brand-dark/90 hover:shadow-[0_14px_30px_-10px_rgba(255,49,49,0.28),0_6px_16px_-4px_rgba(0,0,0,0.35)]"
+            ? "border-brand/40 bg-brand-dark/90 shadow-[0_14px_32px_-10px_rgba(255,49,49,0.21),0_6px_16px_-4px_rgba(0,0,0,0.35)]"
+            : "border-white/10 bg-brand-dark/80 shadow-[0_8px_22px_-8px_rgba(0,0,0,0.3)] hover:border-brand/30 hover:bg-brand-dark/90 hover:shadow-[0_14px_30px_-10px_rgba(255,49,49,0.2),0_6px_16px_-4px_rgba(0,0,0,0.35)]"
         }`}
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-brand/30 blur-2xl transition-opacity duration-300 group-hover:bg-brand/40"
+          className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-brand/21 blur-2xl transition-opacity duration-300 group-hover:bg-brand/28"
         />
         <span
           aria-hidden="true"
@@ -56,7 +56,7 @@ export default function ServiceProcess({
           See the full {steps.length}-step process
         </span>
         <span
-          className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#FF3131,#B91C1C)] text-base font-bold text-white shadow-[0_4px_12px_-2px_rgba(255,49,49,0.5)] transition-transform duration-300 ${
+          className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#FF3131,#B91C1C)] text-base font-bold text-white shadow-[0_4px_12px_-2px_rgba(255,49,49,0.35)] transition-transform duration-300 ${
             open ? "rotate-45" : ""
           }`}
           aria-hidden="true"
@@ -93,10 +93,10 @@ export default function ServiceProcess({
       {open && (
         <div className="mt-5 space-y-6">
           {hasIcons && (
-            <div className="relative rounded-2xl bg-[linear-gradient(135deg,#FF3131,#B91C1C)] p-[2px] shadow-[0_16px_36px_-12px_rgba(255,49,49,0.35),0_6px_18px_-6px_rgba(0,0,0,0.18)]">
+            <div className="relative rounded-2xl bg-[linear-gradient(135deg,#FF3131,#B91C1C)] p-[2px] shadow-[0_16px_36px_-12px_rgba(255,49,49,0.24),0_6px_18px_-6px_rgba(0,0,0,0.18)]">
               <div className="relative overflow-hidden rounded-[14px] bg-brand-dark/[0.96] px-2 py-8 sm:px-6">
-                <span aria-hidden="true" className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-brand/20 blur-3xl" />
-                <span aria-hidden="true" className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-brand/20 blur-3xl" />
+                <span aria-hidden="true" className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-brand/14 blur-3xl" />
+                <span aria-hidden="true" className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-brand/14 blur-3xl" />
                 <div
                   // justify-start, not justify-center (2026-09-25, per
                   // Vignesh: "sourced is being cut" — and DELIVERED was
@@ -150,12 +150,12 @@ export default function ServiceProcess({
             {steps.map((step, i) => (
               <div
                 key={step.title}
-                className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-brand-dark/[0.94] p-5 shadow-[0_16px_36px_-12px_rgba(0,0,0,0.5),0_6px_16px_-4px_rgba(255,49,49,0.22),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md backdrop-saturate-150 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:bg-brand-dark hover:shadow-[0_22px_46px_-14px_rgba(0,0,0,0.55),0_8px_20px_-4px_rgba(255,49,49,0.36),inset_0_1px_0_rgba(255,255,255,0.08)]"
+                className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-brand-dark/[0.94] p-5 shadow-[0_16px_36px_-12px_rgba(0,0,0,0.5),0_6px_16px_-4px_rgba(255,49,49,0.15),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md backdrop-saturate-150 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:bg-brand-dark hover:shadow-[0_22px_46px_-14px_rgba(0,0,0,0.55),0_8px_20px_-4px_rgba(255,49,49,0.25),inset_0_1px_0_rgba(255,255,255,0.08)]"
               >
-                <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-brand/30 blur-2xl transition-all duration-300 group-hover:bg-brand/40" />
+                <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-brand/21 blur-2xl transition-all duration-300 group-hover:bg-brand/28" />
                 <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
                 <div className="relative flex items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#FF3131,#B91C1C)] text-sm font-bold text-white shadow-[0_4px_12px_-2px_rgba(255,49,49,0.5)] transition-transform duration-300 group-hover:scale-110">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#FF3131,#B91C1C)] text-sm font-bold text-white shadow-[0_4px_12px_-2px_rgba(255,49,49,0.35)] transition-transform duration-300 group-hover:scale-110">
                     {i + 1}
                   </span>
                   <p className="text-xs font-semibold uppercase tracking-wide text-white">

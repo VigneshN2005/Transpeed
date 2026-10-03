@@ -1,6 +1,9 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
+import GlassBackground from "@/components/ui/GlassBackground";
+import NewsSideScene from "@/components/news/NewsSideScene";
+import MobileBannerScene from "@/components/ui/MobileBannerScene";
 import { createRouteClient } from "@/lib/supabase/route-client";
 import type { Announcement } from "@/types";
 
@@ -18,7 +21,7 @@ import type { Announcement } from "@/types";
 // gradient icon tile standing in for one so the grid still holds together.
 
 export const metadata = {
-  title: "Client Announcements | Transpeed Logistics",
+  title: "News & Updates | Transpeed Logistics",
 };
 
 // Admin-managed content — always fetch fresh rather than caching a
@@ -116,7 +119,7 @@ function FileButton({ url }: { url: string }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:border-brand hover:text-brand-dark"
+      className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/80 transition-colors hover:border-brand hover:text-white"
     >
       📎 View attachment
     </a>
@@ -196,23 +199,28 @@ export default async function AnnouncementsPage() {
   // and plain" and needed actual colour). This page has no dark PageHero
   // above it (starts straight into the Container), so the glow sits
   // top-left right from the very top of the page.
-  const GLOW_CLASS =
-    "relative bg-[radial-gradient(ellipse_70%_45%_at_15%_0%,rgba(255,49,49,0.07),transparent_60%)]";
+  const GLOW_CLASS = "relative";
 
   if (announcements.length === 0) {
     return (
-      <section className={GLOW_CLASS}>
-        <Container className="py-20">
+      <>
+        <GlassBackground page="announcements" canvas="#4A4D52" />
+        <section id="news-content" className={GLOW_CLASS}>
+        <NewsSideScene targetId="news-content" />
+        {/* Phone/tablet: envelopes folding into newspapers behind the heading. */}
+        <MobileBannerScene kind="news" fill="#4A4D52" className="absolute inset-x-0 top-0 h-72" />
+        <Container className="relative py-20">
           <Reveal>
             <SectionHeading
-              eyebrow="Client Announcements"
+              eyebrow="News & Updates"
               title="Updates from Transpeed"
               description="Success stories, posted images, videos, and the latest from Transpeed Logistics."
             />
           </Reveal>
-          <p className="mt-10 text-sm text-zinc-500">Nothing posted yet, check back soon.</p>
+          <p className="mt-10 text-sm text-white/60">Nothing posted yet, check back soon.</p>
         </Container>
-      </section>
+        </section>
+      </>
     );
   }
 
@@ -225,11 +233,16 @@ export default async function AnnouncementsPage() {
   });
 
   return (
-    <section className={GLOW_CLASS}>
-      <Container className="py-20">
+    <>
+      <GlassBackground page="announcements" canvas="#4A4D52" />
+      <section id="news-content" className={GLOW_CLASS}>
+      <NewsSideScene targetId="news-content" />
+      {/* Phone/tablet: envelopes folding into newspapers behind the heading. */}
+      <MobileBannerScene kind="news" fill="#4A4D52" className="absolute inset-x-0 top-0 h-72" />
+      <Container className="relative py-20">
         <Reveal>
           <SectionHeading
-            eyebrow="Client Announcements"
+            eyebrow="News & Updates"
             title="Updates from Transpeed"
             description="Success stories, posted images, videos, and the latest from Transpeed Logistics."
           />
@@ -295,7 +308,7 @@ export default async function AnnouncementsPage() {
               });
               return (
                 <Reveal key={item.id} delay={Math.min(i * 60, 240)}>
-                  <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
+                  <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-brand-dark shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
                     <div className="relative overflow-hidden">
                       {item.image_url ? (
                         <div className="relative aspect-video w-full overflow-hidden">
@@ -317,10 +330,10 @@ export default async function AnnouncementsPage() {
                     </div>
                     <div className="flex flex-1 flex-col p-6">
                       {item.description && (
-                        <p className="text-sm leading-relaxed text-zinc-600">{item.description}</p>
+                        <p className="text-sm leading-relaxed text-white/70">{item.description}</p>
                       )}
                       <PostMedia item={item} skipImage />
-                      <p className="mt-4 flex items-center gap-1.5 text-xs text-zinc-400">
+                      <p className="mt-4 flex items-center gap-1.5 text-xs text-white/50">
                         <CalendarIcon />
                         {date}
                       </p>
@@ -332,6 +345,7 @@ export default async function AnnouncementsPage() {
           </div>
         )}
       </Container>
-    </section>
+      </section>
+    </>
   );
 }

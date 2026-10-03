@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Container from "@/components/ui/Container";
 import { createClient } from "@/lib/supabase/client";
 
@@ -10,6 +10,10 @@ import { createClient } from "@/lib/supabase/client";
 // working login here only ever means a pre-approved staff account.
 export default function AdminLoginPage() {
   const router = useRouter();
+  // The admin lives at a private address (see middleware.ts). Navigate
+  // relative to wherever we are, so that address never appears in the
+  // site's browser code.
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -33,12 +37,14 @@ export default function AdminLoginPage() {
       return;
     }
 
-    router.push("/admin/dashboard");
+    router.push(`${pathname.replace(/\/+$/, "")}/dashboard`);
     router.refresh();
   }
 
   return (
     <Container className="flex min-h-[70vh] items-center justify-center py-20">
+      {/* marks this as an admin page: hides the public menu/footer and skips site animations */}
+      <span data-admin-area hidden />
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-xl border border-zinc-200 p-8"

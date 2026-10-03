@@ -1,18 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  /* Site canvas — moved off flat white (2026-09-14, per Vignesh, relaying
-     meeting feedback, revised twice the same day). First pass warmed it to
-     a near-white ivory, second pass to a soft blush — both still read as
-     "basically white" once the per-section gradient glows faded out lower
-     down each page, which is exactly what Vignesh flagged next ("each page
-     its white... light but visible colour"). This third pass makes the
-     base itself a clearly-coloured warm peach/blush rather than relying on
-     glows to carry the colour, so every page reads as tinted top to bottom,
-     not just near its hero. Still light enough for body copy and white
-     cards/badges to read cleanly on top. */
-  --background: #f9ddd6;
-  --foreground: #1a1a1a;
+  /* Site canvas — fourth pass, full dark theme (2026-10-01, per Vignesh,
+     after three light-theme attempts were each rejected as "plane" or "still
+     white, not matching" — relaying the client's request to "do it like
+     spotify?", confirmed as "Yes, full dark theme everywhere"). Moved off
+     the light-canvas approach entirely: a true near-black page background
+     (Spotify-style, slightly darker than the locked --brand-dark so that
+     --brand-dark elements like the hero, footer and dark cards read as a
+     lightly-elevated surface sitting on top of the page rather than
+     blending into it) with near-white body text. This sidesteps the
+     structural problem that sank every light attempt — a top-anchored glow
+     that fades out partway down a long page — because the base colour
+     itself now carries the dark canvas everywhere, top to bottom, with no
+     dependence on glow placement. Brand red is untouched everywhere it
+     already does real work — buttons, links, icons, taglines. */
+  --background: #121212;
+  --foreground: #f5f5f5;
 
   /* Brand colours (locked): red/orange accent + near-black */
   --brand: #ff3131;
@@ -182,4 +186,190 @@ body {
   backdrop-filter: blur(2px);
   font-size: 10px !important;
   padding: 2px 8px !important;
+}
+
+/* ------------------------------------------------------------------
+   Premium text & content motion (2026-10-02, per Vignesh: "add shadow
+   effect to the headings or titles ... apply the text or content
+   animations which make the website look aesthetic, premium and
+   professional, not too cheesy or clumsy"). One easing curve across the
+   site, everything plays once, nothing loops.
+   ------------------------------------------------------------------ */
+
+/* Heading depth: a soft, deep shadow, no glow or outline. */
+.tp-heading {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28), 0 6px 18px rgba(0, 0, 0, 0.32);
+}
+/* Page titles: same depth plus a faint brand-red bloom. It fades in after the
+   words have risen, so the title "settles" and then gains depth. */
+.tp-title {
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.35), 0 10px 30px rgba(0, 0, 0, 0.4),
+    0 0 42px rgba(255, 49, 49, 0.12);
+  animation: tp-shadow-in 1400ms ease var(--tp-shadow-delay, 1600ms) both;
+}
+@keyframes tp-shadow-in {
+  from {
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(255, 49, 49, 0);
+  }
+}
+
+/* Word mask reveal: each word rises from behind an invisible baseline.
+   The mask lifts once the word has landed so descenders and the shadow are
+   never clipped afterwards. */
+.tp-wmask {
+  display: inline-block;
+  vertical-align: top;
+  padding-bottom: 0.24em;
+  margin-bottom: -0.24em;
+  clip-path: inset(-0.5em -0.6em 0 -0.6em);
+  animation: tp-unmask var(--tp-dur, 1400ms) linear var(--tp-delay, 0ms) both;
+}
+.tp-word {
+  display: inline-block;
+  animation: tp-word-rise var(--tp-dur, 1400ms) cubic-bezier(0.2, 0.75, 0.2, 1) var(--tp-delay, 0ms) both;
+}
+@keyframes tp-word-rise {
+  from { transform: translateY(112%); }
+  to { transform: none; }
+}
+@keyframes tp-unmask {
+  0%, 99.9% { clip-path: inset(-0.5em -0.6em 0 -0.6em); }
+  100% { clip-path: inset(-2em -2em -2em -2em); }
+}
+
+/* Load-time fades for hero copy (eyebrow, description, buttons, stats). */
+.tp-fade {
+  animation: tp-fade-up 1300ms cubic-bezier(0.2, 0.75, 0.2, 1) var(--tp-delay, 0ms) both;
+}
+.tp-fade-x {
+  animation: tp-fade-x 1100ms cubic-bezier(0.2, 0.75, 0.2, 1) var(--tp-delay, 0ms) both;
+}
+@keyframes tp-fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes tp-fade-x {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Section headings (SectionHeading.tsx): the red label slides in first,
+   then the heading and description fade up a beat later, when scrolled to.
+   Only hidden once JS has armed it, so with JS off everything just shows. */
+.tp-sh[data-armed] .tp-sh-eb { opacity: 0; transform: translateX(-16px); }
+.tp-sh[data-armed] .tp-sh-t,
+.tp-sh[data-armed] .tp-sh-d { opacity: 0; transform: translateY(22px); }
+.tp-sh[data-in] .tp-sh-eb,
+.tp-sh[data-in] .tp-sh-t,
+.tp-sh[data-in] .tp-sh-d {
+  opacity: 1;
+  transform: none;
+  transition: opacity 1100ms ease, transform 1200ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+.tp-sh[data-in] .tp-sh-t { transition-delay: 300ms; }
+.tp-sh[data-in] .tp-sh-d { transition-delay: 700ms; }
+
+/* Buttons: a quiet light glint across on hover; the arrow nudges forward. */
+.btn-glint {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-glint::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+.btn-glint:hover::after { animation: tp-glint 850ms ease; }
+@keyframes tp-glint { to { left: 130%; } }
+.tp-arrow { display: inline-block; transition: transform 250ms cubic-bezier(0.2, 0.75, 0.2, 1); }
+.btn-glint:hover .tp-arrow { transform: translateX(4px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-title, .tp-wmask, .tp-word, .tp-fade, .tp-fade-x { animation: none !important; }
+  .tp-wmask { clip-path: none !important; }
+  .btn-glint:hover::after { animation: none !important; }
+}
+
+/* Site-wide heading + key-phrase motion, driven by HeadingMotion.tsx
+   (2026-10-02, per Vignesh). Large headings: words rise from behind an
+   invisible line; the mask lifts once each word has landed so tails and
+   shadows are never cut. Smaller headings: the whole line rises. */
+[data-tpa] .tp-m {
+  display: inline-block;
+  vertical-align: top;
+  padding-bottom: 0.24em;
+  margin-bottom: -0.24em;
+  clip-path: inset(-0.5em -0.6em 0 -0.6em);
+}
+[data-tpa] .tp-w {
+  display: inline-block;
+  transform: translateY(112%);
+}
+[data-tpa][data-tpin] .tp-w {
+  transform: none;
+  transition: transform 1400ms cubic-bezier(0.2, 0.75, 0.2, 1) var(--d, 0ms);
+}
+[data-tpa][data-tpin] .tp-m {
+  clip-path: inset(-2em -2em -2em -2em);
+  transition: clip-path 0s linear calc(var(--d, 0ms) + 1400ms);
+}
+[data-tpl] {
+  opacity: 0;
+  transform: translateY(22px);
+}
+[data-tpl][data-tpin] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 1100ms ease, transform 1300ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+/* Key phrase: brighter text with a soft red underline that draws in. */
+.tp-key {
+  color: #fff;
+  font-weight: 600;
+  background-image: linear-gradient(90deg, #ff3131, #ff6b5f);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 2px;
+  padding-bottom: 1px;
+}
+.tp-key[data-tpa] { background-size: 0% 2px; }
+.tp-key[data-tpa][data-tpin] {
+  background-size: 100% 2px;
+  transition: background-size 1600ms cubic-bezier(0.65, 0, 0.25, 1) 900ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tpa] .tp-w, [data-tpl] { transform: none !important; opacity: 1 !important; }
+  [data-tpa] .tp-m { clip-path: none !important; }
+  .tp-key[data-tpa] { background-size: 100% 2px !important; }
+}
+
+/* Very slow zoom for the crossfading photo frame (PhotoCrossfade.tsx). */
+.tp-kenburns { animation: tp-kenburns 6400ms ease-out both; }
+@keyframes tp-kenburns { from { transform: scale(1); } to { transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .tp-kenburns { animation: none !important; } }
+
+/* Admin pages (private address, see middleware.ts) show only their own
+   tools: the public menu and footer are hidden there. They mark themselves
+   with [data-admin-area], so no admin URL appears in public code. */
+body:has([data-admin-area]) > header,
+body:has([data-admin-area]) > footer {
+  display: none;
+}
+
+/* "Get a Quote" pop-up entrance (QuoteProvider.tsx). */
+.tp-quote-backdrop { animation: tp-fade-in-only 300ms ease both; }
+.tp-quote-panel { animation: tp-quote-in 500ms cubic-bezier(0.2, 0.75, 0.2, 1) both; }
+@keyframes tp-fade-in-only { from { opacity: 0; } }
+@keyframes tp-quote-in { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
+@media (prefers-reduced-motion: reduce) {
+  .tp-quote-backdrop, .tp-quote-panel { animation: none !important; }
 }

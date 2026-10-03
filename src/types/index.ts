@@ -55,6 +55,8 @@ export interface Location {
   address: string;
   isHeadquarters?: boolean;
   isBranch?: boolean;
+  /** Office phone, shown under the address as a tap-to-call link. */
+  phone?: string;
 }
 
 export interface Certification {

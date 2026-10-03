@@ -72,7 +72,7 @@ export default function ContactReveal() {
                 window.dispatchEvent(new Event("open-chatbot"));
               }
             }}
-            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] p-7 text-center backdrop-blur-sm transition-all hover:-translate-y-1 hover:bg-white/10 hover:shadow-2xl"
+            className="btn-glint group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] p-7 text-center backdrop-blur-sm transition-all hover:-translate-y-1 hover:bg-white/10 hover:shadow-2xl"
           >
             {/* Soft corner glow, tinted per channel, that blooms in on
                 hover — replaces the previously flat white box. */}

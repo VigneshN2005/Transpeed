@@ -2,7 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
+import GlassBackground from "@/components/ui/GlassBackground";
+import BgPhoto from "@/components/ui/BgPhoto";
 import HeroSlideshow from "@/components/home/HeroSlideshow";
+import HeroVehicles from "@/components/home/HeroVehicles";
+import MobileBannerScene from "@/components/ui/MobileBannerScene";
+import CountUp from "@/components/ui/CountUp";
 import VideoShowcase from "@/components/home/VideoShowcase";
 import { services } from "@/data/services";
 import { certifications } from "@/data/certifications";
@@ -11,6 +16,17 @@ import { clients } from "@/data/clients";
 export default function Home() {
   return (
     <>
+      {/* "Brand Ember Glass" test background (2026-10-01, per Vignesh:
+          dark-theme pass still "not matching" → asked for a glass,
+          colourful, aesthetic background instead, confirmed direction
+          "Brand Ember Glass" — near-black canvas with soft brand-red glow
+          blobs, frosted glass panels floating on top). Fixed (not part of
+          page flow) so it covers the full scroll height of the page
+          uniformly — this is deliberately page-scoped (inline here, not in
+          globals.css) since Vignesh asked to trial it on one page first
+          before rolling it out site-wide. */}
+      <GlassBackground page="home" />
+
       {/* Hero — real headline from the current site, per Gokul's instruction
           to keep it but relabel the two CTAs and remove the video.
           Visual treatment upgraded: layered gradient-mesh + route-grid
@@ -28,14 +44,28 @@ export default function Home() {
               reddish-brown wash over the whole hero instead of a
               corner accent. sm: and up is the exact original desktop
               treatment, untouched. */}
-          <div className="absolute -top-16 right-[-5rem] h-56 w-56 rounded-full bg-brand/15 blur-[70px] sm:-top-32 sm:right-[-10rem] sm:h-[30rem] sm:w-[30rem] sm:bg-brand/25 sm:blur-[120px]" />
-          <div className="absolute -bottom-20 left-[-4rem] h-48 w-48 rounded-full bg-brand/10 blur-[60px] sm:-bottom-40 sm:left-[-8rem] sm:h-[26rem] sm:w-[26rem] sm:blur-[110px]" />
+          <div className="absolute -top-16 right-[-5rem] h-56 w-56 rounded-full bg-brand/10 blur-[70px] sm:-top-32 sm:right-[-10rem] sm:h-[30rem] sm:w-[30rem] sm:bg-brand/18 sm:blur-[120px]" />
+          <div className="absolute -bottom-20 left-[-4rem] h-48 w-48 rounded-full bg-brand/7 blur-[60px] sm:-bottom-40 sm:left-[-8rem] sm:h-[26rem] sm:w-[26rem] sm:blur-[110px]" />
           <div className="hero-grid absolute inset-0" />
         </div>
 
-        <Container className="relative grid gap-14 py-24 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:py-32">
+        {/* Animated plane / ship / truck scene (2026-10-02, per Vignesh
+            relaying the client) — see HeroVehicles.tsx. Desktop only; the
+            hero's bottom padding is deepened on lg (py-32 -> pt-32 pb-40; was
+            pb-56 while the ship sat above the road, ship since moved beside the card)
+            so the sea + road lanes sit BELOW the stats and the customs
+            card instead of running behind them. */}
+        <HeroVehicles />
+        {/* Phone/tablet version of the vehicle scene (2026-10-03, per Vignesh). */}
+        <MobileBannerScene kind="home" />
+        <Container className="relative grid gap-14 py-24 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:pt-32 lg:pb-40">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand backdrop-blur-sm">
+            {/* Load motion (2026-10-02, per Vignesh: premium, not cheesy):
+                badge fades in, the two title words rise from behind an
+                invisible line, the title gains its soft shadow, then the
+                line, buttons and stats fade up in turn and the stats count
+                up. CSS classes live in globals.css (.tp-*). */}
+            <span className="tp-fade-x inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-brand" />
               AEO-Certified Freight &amp; Logistics
             </span>
@@ -46,21 +76,31 @@ export default function Home() {
                 fit pass) — 60px was tight against the side padding on
                 narrow phones; sm/lg sizes are unchanged so tablet/desktop
                 looks exactly as before. */}
-            <h1 className="mt-5 font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
-              <span className="text-white">Transpeed</span>{" "}
-              <span className="text-brand">Logistics</span>
+            <h1
+              className="tp-title mt-5 font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl"
+              style={{ ["--tp-shadow-delay" as string]: "1900ms" }}
+            >
+              <span className="tp-wmask" style={{ ["--tp-delay" as string]: "250ms" }}>
+                <span className="tp-word text-white" style={{ ["--tp-delay" as string]: "250ms" }}>Transpeed</span>
+              </span>{" "}
+              <span className="tp-wmask" style={{ ["--tp-delay" as string]: "550ms" }}>
+                <span className="tp-word text-brand" style={{ ["--tp-delay" as string]: "550ms" }}>Logistics</span>
+              </span>
             </h1>
 
-            <p className="mt-6 max-w-xl border-l-2 border-brand/60 pl-5 text-lg leading-relaxed text-white/75 sm:text-xl">
+            <p
+              className="tp-fade mt-6 max-w-xl border-l-2 border-brand/60 pl-5 text-lg leading-relaxed text-white/75 sm:text-xl"
+              style={{ ["--tp-delay" as string]: "1400ms" }}
+            >
               We&apos;ve mastered the art of navigating the complex and dynamic world of{" "}
-              <span className="font-semibold text-white">global logistics.</span>
+              <span className="tp-key">global logistics.</span>
             </p>
-            <div className="mt-9 flex flex-wrap gap-4">
+            <div className="tp-fade mt-9 flex flex-wrap gap-4" style={{ ["--tp-delay" as string]: "1750ms" }}>
               <Link
                 href="/services"
-                className="rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-8px_rgba(255,49,49,0.6)] transition-all hover:-translate-y-0.5 hover:bg-brand/90"
+                className="btn-glint rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-8px_rgba(255,49,49,0.42)] transition-all hover:-translate-y-0.5 hover:bg-brand/90"
               >
-                Get Services
+                Get Services <span aria-hidden="true" className="tp-arrow">→</span>
               </Link>
               <Link
                 href="/company"
@@ -70,15 +110,21 @@ export default function Home() {
               </Link>
             </div>
 
-            <dl className="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/10 pt-8 sm:grid-cols-4">
+            <dl
+              className="tp-fade mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/10 pt-8 sm:grid-cols-4"
+              style={{ ["--tp-delay" as string]: "2050ms" }}
+            >
               {[
-                { value: "2005", label: "Founded" },
-                { value: "9", label: "Offices in India" },
-                { value: services.length.toString(), label: "Core Services" },
-                { value: `${certifications.length}+`, label: "Certifications" },
+                { to: 2005, from: 1990, suffix: "", label: "Founded" },
+                { to: 9, from: 0, suffix: "", label: "Offices in India" },
+                { to: services.length, from: 0, suffix: "", label: "Core Services" },
+                { to: certifications.length, from: 0, suffix: "+", label: "Certifications" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <dt className="font-display text-3xl font-bold text-white">{stat.value}</dt>
+                  <dt className="tp-heading font-display text-3xl font-bold text-white">
+                    <CountUp to={stat.to} from={stat.from} duration={2400} delay={1900} />
+                    {stat.suffix}
+                  </dt>
                   <dd className="mt-1 text-xs font-medium uppercase tracking-wide text-white/50">
                     {stat.label}
                   </dd>
@@ -110,7 +156,7 @@ export default function Home() {
                   slideshow itself already uses the bottom edge for its caption
                   text and slide-position dots, so a bottom-anchored card sat
                   on top of both. */}
-              <div className="absolute -top-6 -left-6 z-10 hidden items-center gap-3 rounded-xl border border-zinc-100 bg-white px-4 py-3 text-brand-dark shadow-xl sm:flex">
+              <div className="absolute -top-6 -left-6 z-10 hidden items-center gap-3 rounded-xl border border-white/10 bg-brand-dark px-4 py-3 text-white shadow-xl sm:flex">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M3 7l9-4 9 4-9 4-9-4z" strokeLinejoin="round" />
@@ -120,7 +166,7 @@ export default function Home() {
                 </span>
                 <div className="leading-tight">
                   <p className="text-sm font-bold">9 Offices</p>
-                  <p className="text-xs text-zinc-500">Across India</p>
+                  <p className="text-xs text-white/60">Across India</p>
                 </div>
               </div>
             </div>
@@ -141,9 +187,9 @@ export default function Home() {
                 Transpeed Logistics") and the em-dash dropped, matching the
                 em-dash-free house style already applied everywhere else. */}
             <Reveal variant="image" delay={120} className="mt-6 lg:mt-8">
-              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-5 backdrop-blur-sm sm:p-6">
+              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-5 backdrop-blur-sm transition-all duration-500 hover:border-brand/30 hover:bg-white/[0.07] sm:p-6">
                 <div
-                  className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand/20 blur-2xl"
+                  className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand/14 blur-2xl"
                   aria-hidden="true"
                 />
                 <div className="relative flex items-start gap-4">
@@ -164,7 +210,7 @@ export default function Home() {
                 </div>
                 <p className="relative mt-4 text-sm leading-relaxed text-white/70 sm:text-base">
                   In recognition of our consistent service quality and regulatory compliance, Indian
-                  Customs has awarded us a Lifetime Customs Clearance License, a distinction held by
+                  Customs has awarded us a <span className="tp-key">Lifetime Customs Clearance License</span>, a distinction held by
                   very few logistics operators in India, reflecting our long-standing commitment to
                   compliant, reliable, and high-quality customs operations.
                 </p>
@@ -210,19 +256,21 @@ export default function Home() {
           together before the eye even reaches the icons. Still the short
           homepage tagline versions, distinct from
           the longer Vision/Mission paragraphs on the Company page. */}
-      <section className="relative bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(255,49,49,0.06),transparent_65%)] py-20">
+      <div className="relative overflow-hidden">
+        <BgPhoto blend position="top" src="/images/backgrounds/home-plane.jpg" alt="Cargo plane at night" focus="78% center" />
+      <section className="relative py-20">
         <Container>
           <Reveal className="mx-auto max-w-xl text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-brand">
               What Drives Every Shipment
             </span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
+            <h2 className="tp-heading mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Mission &amp; Vision
             </h2>
           </Reveal>
 
           <Reveal className="mt-12">
-            <div className="relative isolate overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)]">
+            <div className="group relative isolate overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_45px_90px_-20px_rgba(0,0,0,0.55)]">
               <div className="absolute inset-x-0 top-0 z-10 h-1.5 bg-gradient-to-r from-brand-dark via-white/60 to-brand" aria-hidden="true" />
 
               <div className="grid lg:grid-cols-2">
@@ -245,8 +293,8 @@ export default function Home() {
                       <path d="M5 4h13l-3 4 3 4H5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
-                  <p className="relative mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-brand">Mission</p>
-                  <p className="relative mt-3 font-display text-2xl font-semibold leading-snug text-white sm:text-3xl">
+                  <p data-tp="line" className="relative mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-brand">Mission</p>
+                  <p data-tp="words" className="relative mt-3 font-display text-2xl font-semibold leading-snug text-white sm:text-3xl">
                     We commit and stand with you: every mile, every shipment, every time.
                   </p>
                 </div>
@@ -270,8 +318,8 @@ export default function Home() {
                       <circle cx="12" cy="12" r="2.7" />
                     </svg>
                   </span>
-                  <p className="relative mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-white/80">Vision</p>
-                  <p className="relative mt-3 font-display text-2xl font-semibold leading-snug text-white sm:text-3xl">
+                  <p data-tp="line" className="relative mt-6 text-xs font-semibold uppercase tracking-[0.25em] text-white/80">Vision</p>
+                  <p data-tp="words" className="relative mt-3 font-display text-2xl font-semibold leading-snug text-white sm:text-3xl">
                     To be India&apos;s most trusted logistics partner, recognized for reliability,
                     compliance, and an unwavering commitment to the businesses we serve.
                   </p>
@@ -283,7 +331,7 @@ export default function Home() {
                 style={{ boxShadow: "0 12px 30px -8px rgba(0,0,0,0.45)" }}
                 aria-hidden="true"
               >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff3131" strokeWidth="2" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff3131" strokeWidth="2" className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
                   <path d="M5 12h14" strokeLinecap="round" />
                   <path d="M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -306,8 +354,11 @@ export default function Home() {
           watermark from the first pass. Kept deliberately faint (~6-7%
           alpha) so the white cards and body copy on top stay fully
           legible. */}
-      <section className="relative bg-[radial-gradient(ellipse_65%_55%_at_10%_-8%,rgba(255,49,49,0.07),transparent_60%),radial-gradient(ellipse_55%_45%_at_100%_108%,rgba(255,49,49,0.05),transparent_65%)] py-20">
+      <section className="relative py-20">
         <Container>
+        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-brand-dark/40 p-6 shadow-[0_24px_55px_-14px_rgba(0,0,0,0.45),0_8px_24px_-4px_rgba(255,49,49,0.13),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 hover:border-brand/30 hover:shadow-[0_28px_65px_-14px_rgba(0,0,0,0.5),0_10px_30px_-4px_rgba(255,49,49,0.21),inset_0_1px_0_rgba(255,255,255,0.1)] sm:p-10">
+          <span aria-hidden="true" className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
+          <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-brand/7 blur-3xl" />
           {/* Custom header, replacing the plain SectionHeading call
               (2026-09-14, per Vignesh: "the content look plane, i want it
               to have some shadow effect or some better looking effect").
@@ -321,10 +372,10 @@ export default function Home() {
               the flat pink page background, plus the display face already
               used on the other section titles on this page. */}
           <Reveal className="max-w-2xl">
-            <span className="inline-flex items-center rounded-full bg-white/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-brand shadow-[0_6px_16px_-4px_rgba(0,0,0,0.18)] ring-1 ring-black/5">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-brand">
               What We Do
             </span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark drop-shadow-[0_4px_8px_rgba(0,0,0,0.14)] sm:text-4xl">
+            <h2 className="tp-heading mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Our Services
             </h2>
             {/* New heading + description (2026-09-21, per Vignesh) — same
@@ -334,9 +385,9 @@ export default function Home() {
             <p className="mt-3 text-sm font-semibold uppercase tracking-[0.15em] text-brand sm:text-base">
               End to End Supply Chain Solutions
             </p>
-            <p className="mt-4 text-base text-zinc-600">
-              You don&apos;t need five vendors to move your business forward. You need one partner who gets it
-              right, on schedule, at the right price, every time.
+            <p className="mt-4 text-base text-white/70">
+              You don&apos;t need five vendors to move your business forward. You need <span className="tp-key">one partner who gets it
+              right</span>, on schedule, at the right price, every time.
             </p>
           </Reveal>
           {/* Scroll-reveal (2026-09-14, per Vignesh: "things appearing from
@@ -395,20 +446,20 @@ export default function Home() {
               accents, not something that was supposed to bleed past this
               box's edges anyway. */}
           <div className="relative mt-10 overflow-hidden">
-            <div aria-hidden="true" className="pointer-events-none absolute -top-16 -left-10 h-80 w-80 rounded-full bg-brand/20 blur-3xl" />
-            <div aria-hidden="true" className="pointer-events-none absolute top-1/3 right-4 h-72 w-72 rounded-full bg-brand/16 blur-3xl" />
+            <div aria-hidden="true" className="pointer-events-none absolute -top-16 -left-10 h-80 w-80 rounded-full bg-brand/14 blur-3xl" />
+            <div aria-hidden="true" className="pointer-events-none absolute top-1/3 right-4 h-72 w-72 rounded-full bg-brand/11 blur-3xl" />
             <div aria-hidden="true" className="pointer-events-none absolute -bottom-16 left-1/3 h-80 w-80 rounded-full bg-brand-dark/10 blur-3xl" />
             <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {services.map((service, i) => (
                 <Reveal key={service.slug} delay={Math.min(i * 60, 240)} className="h-full">
                 <Link
                   href={`/services#${service.slug}`}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-brand-dark/[0.94] p-7 shadow-[0_24px_55px_-14px_rgba(0,0,0,0.55),0_8px_24px_-4px_rgba(255,49,49,0.22),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md backdrop-saturate-150 transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:bg-brand-dark hover:shadow-[0_32px_70px_-16px_rgba(0,0,0,0.6),0_14px_34px_-6px_rgba(255,49,49,0.4),inset_0_1px_0_rgba(255,255,255,0.08)]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/15 bg-brand-dark/55 p-7 shadow-[0_24px_55px_-14px_rgba(0,0,0,0.45),0_8px_24px_-4px_rgba(255,49,49,0.15),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:bg-brand-dark/70 hover:shadow-[0_32px_70px_-16px_rgba(0,0,0,0.5),0_14px_34px_-6px_rgba(255,49,49,0.28),inset_0_1px_0_rgba(255,255,255,0.1)]"
                 >
-                  <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-brand/15 blur-2xl" />
+                  <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-brand/10 blur-2xl" />
                   <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
                   {service.icon && (
-                    <span className="flex h-44 w-44 shrink-0 items-center justify-center rounded-2xl border border-brand/25 bg-[radial-gradient(circle_at_30%_25%,rgba(255,49,49,0.22),rgba(255,49,49,0.04)_70%)] p-3 shadow-[0_10px_24px_-8px_rgba(255,49,49,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:border-brand/45">
+                    <span className="flex h-44 w-44 shrink-0 items-center justify-center rounded-2xl border border-brand/25 bg-[radial-gradient(circle_at_30%_25%,rgba(255,49,49,0.15),rgba(255,49,49,0.03)_70%)] p-3 shadow-[0_10px_24px_-8px_rgba(255,49,49,0.21),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:border-brand/45">
                       <Image src={service.icon} alt="" width={176} height={176} className="h-full w-full object-contain drop-shadow-sm" />
                     </span>
                   )}
@@ -432,8 +483,10 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
         </Container>
       </section>
+      </div>
 
       {/* Certifications — redesigned (2026-09-14, per Vignesh: "make the
           certified and trusted a bit modern and better looking, professional
@@ -457,9 +510,14 @@ export default function Home() {
           from the Services section's corner glows above, so scrolling the
           page feels like a sequence of soft colour moments rather than one
           flat repeated tint. */}
-      <section className="relative border-t border-zinc-200 bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(255,49,49,0.08),transparent_65%)] py-20">
+      <div className="relative overflow-hidden">
+        <BgPhoto blend position="bottom" src="/images/backgrounds/home-ship.jpg" alt="Container ship at dusk" />
+      <section className="relative border-t border-white/10 py-20">
         <Container>
-          <Reveal className="mx-auto max-w-2xl text-center">
+        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-brand-dark/40 p-6 shadow-[0_24px_55px_-14px_rgba(0,0,0,0.45),0_8px_24px_-4px_rgba(255,49,49,0.13),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 hover:border-brand/30 hover:shadow-[0_28px_65px_-14px_rgba(0,0,0,0.5),0_10px_30px_-4px_rgba(255,49,49,0.21),inset_0_1px_0_rgba(255,255,255,0.1)] sm:p-10">
+          <span aria-hidden="true" className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
+          <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-brand/7 blur-3xl" />
+          <Reveal className="relative mx-auto max-w-2xl text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-brand">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" strokeLinejoin="round" />
@@ -467,12 +525,12 @@ export default function Home() {
               </svg>
               Compliance &amp; Accreditation
             </span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
+            <h2 className="tp-heading mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Certified &amp; Trusted By
             </h2>
             <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-brand to-brand/20" aria-hidden="true" />
-            <p className="mt-4 text-base text-zinc-600">
-              AEO status, ISO certification, and membership with the chambers and alliances that keep our freight moving compliantly, worldwide.
+            <p className="mt-4 text-base text-white/70">
+              <span className="tp-key">AEO status, ISO certification</span>, and membership with the chambers and alliances that keep our freight moving compliantly, worldwide.
             </p>
           </Reveal>
           {/* Logo tiles staggered in on scroll too (2026-09-14, per
@@ -487,7 +545,7 @@ export default function Home() {
               of a clean 2-column grid. Moved the width classes onto the
               Reveal wrapper (which IS a direct child of this flex row) and
               left the tile itself at w-full so it just fills its slot. */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
+          <div className="relative mt-10 flex flex-wrap items-center justify-center gap-5">
             {certifications.map((cert, i) =>
               cert.logo ? (
                 <Reveal
@@ -497,7 +555,7 @@ export default function Home() {
                   className="w-[calc(50%-10px)] sm:w-44"
                 >
                 <div
-                  className="group flex h-24 w-full items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28"
+                  className="group flex h-24 w-full items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_14px_32px_-8px_rgba(0,0,0,0.55)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-[0_22px_44px_-10px_rgba(0,0,0,0.65)] sm:h-28"
                   title={cert.name}
                 >
                   <Image
@@ -512,7 +570,7 @@ export default function Home() {
               ) : (
                 <Reveal key={cert.name} delay={Math.min(i * 40, 320)}>
                 <span
-                  className="rounded-full border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-600 shadow-sm transition-colors hover:border-brand/30"
+                  className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 shadow-sm transition-colors hover:border-brand/30"
                 >
                   {cert.name}
                 </span>
@@ -520,6 +578,7 @@ export default function Home() {
               )
             )}
           </div>
+        </div>
         </Container>
       </section>
 
@@ -533,9 +592,12 @@ export default function Home() {
           foot of the section rather than the top, 2026-09-14) so it reads
           as its own distinct colour moment rather than a repeat of the
           Certifications section right above it. */}
-      <section className="relative bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(255,49,49,0.06),transparent_65%)] py-20">
+      <section className="relative py-20">
         <Container>
-          <Reveal className="mx-auto max-w-2xl text-center">
+        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-brand-dark/40 p-6 shadow-[0_24px_55px_-14px_rgba(0,0,0,0.45),0_8px_24px_-4px_rgba(255,49,49,0.13),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 hover:border-brand/30 hover:shadow-[0_28px_65px_-14px_rgba(0,0,0,0.5),0_10px_30px_-4px_rgba(255,49,49,0.21),inset_0_1px_0_rgba(255,255,255,0.1)] sm:p-10">
+          <span aria-hidden="true" className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
+          <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-brand/7 blur-3xl" />
+          <Reveal className="relative mx-auto max-w-2xl text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-brand">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <circle cx="9" cy="8" r="3" />
@@ -545,19 +607,19 @@ export default function Home() {
               </svg>
               Who We Work With
             </span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
+            <h2 className="tp-heading mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Our Clients
             </h2>
             <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-brand to-brand/20" aria-hidden="true" />
-            <p className="mt-4 text-base text-zinc-600">
-              At Transpeed Logistics, we have had the pleasure of working with some of the biggest names in the industry. Our clients trust us to deliver their goods safely and on time, every time.
+            <p className="mt-4 text-base text-white/70">
+              At Transpeed Logistics, we have had the pleasure of working with some of the biggest names in the industry. Our clients trust us to deliver their goods <span className="tp-key">safely and on time, every time.</span>
             </p>
           </Reveal>
           {/* Logo tiles staggered in on scroll too (2026-09-14, per
               Vignesh), same capped stagger as the Certifications wall.
               Same 2026-09-29 mobile-width fix as above -- width moved onto
               the Reveal wrapper, tile itself is w-full. */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
+          <div className="relative mt-10 flex flex-wrap items-center justify-center gap-5">
             {clients.map((client, i) =>
               client.logo ? (
                 <Reveal
@@ -567,7 +629,7 @@ export default function Home() {
                   className="w-[calc(50%-10px)] sm:w-48"
                 >
                 <div
-                  className="group flex h-24 w-full items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_16px_32px_-8px_rgba(0,0,0,0.24)] sm:h-28"
+                  className="group flex h-24 w-full items-center justify-center rounded-xl border border-zinc-200 bg-white p-4 shadow-[0_14px_32px_-8px_rgba(0,0,0,0.55)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-[0_22px_44px_-10px_rgba(0,0,0,0.65)] sm:h-28"
                   title={client.name}
                 >
                   <Image
@@ -582,7 +644,7 @@ export default function Home() {
               ) : (
                 <Reveal key={client.name} delay={Math.min(i * 40, 320)}>
                 <span
-                  className="rounded-full border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-600 shadow-sm transition-colors hover:border-brand/30"
+                  className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 shadow-sm transition-colors hover:border-brand/30"
                 >
                   {client.name}
                 </span>
@@ -590,8 +652,10 @@ export default function Home() {
               )
             )}
           </div>
+        </div>
         </Container>
       </section>
+      </div>
 
       {/* Corporate overview video — closing section of the home page
           (2026-09-29, per Vignesh: put the video "at the bottom", not as
@@ -613,8 +677,8 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {/* Same mobile-scaling fix as the hero above, applied here too
               (2026-09-29, per Vignesh). */}
-          <div className="absolute -top-16 -left-10 h-52 w-52 rounded-full bg-brand/10 blur-[70px] sm:-top-40 sm:-left-24 sm:h-[28rem] sm:w-[28rem] sm:bg-brand/20 sm:blur-[130px]" />
-          <div className="absolute top-1/3 right-[-6rem] h-48 w-48 rounded-full bg-brand/10 blur-[60px] sm:right-[-12rem] sm:h-[26rem] sm:w-[26rem] sm:blur-[130px]" />
+          <div className="absolute -top-16 -left-10 h-52 w-52 rounded-full bg-brand/7 blur-[70px] sm:-top-40 sm:-left-24 sm:h-[28rem] sm:w-[28rem] sm:bg-brand/14 sm:blur-[130px]" />
+          <div className="absolute top-1/3 right-[-6rem] h-48 w-48 rounded-full bg-brand/7 blur-[60px] sm:right-[-12rem] sm:h-[26rem] sm:w-[26rem] sm:blur-[130px]" />
           <div className="absolute -bottom-20 left-1/3 h-44 w-44 -translate-x-1/2 rounded-full bg-white/[0.05] blur-[60px] sm:-bottom-44 sm:h-[24rem] sm:w-[24rem] sm:blur-[120px]" />
         </div>
         {/* Wider than the shared `Container` (max-w-6xl) on purpose —
@@ -644,7 +708,7 @@ export default function Home() {
                 </svg>
                 See Us In Motion
               </span>
-              <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h2 className="tp-heading mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Transpeed, In Motion
               </h2>
               <div className="mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-brand to-brand/20" aria-hidden="true" />
