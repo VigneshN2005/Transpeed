@@ -48,6 +48,23 @@ export default function MobileBannerScene({
     if (!ctx) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const BG = fill;
+    // Home only: positions of page elements the plane/ship are placed around
+    // (the AEO pill above which the plane flies, the buttons row the ship
+    // sits below), measured relative to this box.
+    let planeY = -1, shipX = -1, shipY = -1;
+    const measureAnchors = () => {
+      if (kind !== "home") return;
+      const host = box.parentElement;
+      const b = box.getBoundingClientRect();
+      const pill = host?.querySelector("[data-mb-plane-anchor]")?.getBoundingClientRect();
+      const btns = host?.querySelector("[data-mb-ship-anchor]")?.getBoundingClientRect();
+      planeY = pill ? Math.max(28, (pill.top - b.top) / 2) : -1;
+      if (btns) {
+        const btnRight = Math.max(...Array.from(host!.querySelectorAll("[data-mb-ship-anchor] > *")).map((el) => el.getBoundingClientRect().right - b.left));
+        shipX = Math.min(b.width - 52, Math.max(btnRight - 20, b.width * 0.72));
+        shipY = btns.bottom - b.top + 28;
+      }
+    };
     let W = 0, H = 0, raf = 0, visible = true, t0 = performance.now();
 
     // Size from the wrapper box (a fixed CSS size), never from the canvas
@@ -56,6 +73,7 @@ export default function MobileBannerScene({
     // graphics memory (2026-10-03 fix). Pixel budget capped as well.
     const resize = () => {
       W = box.clientWidth; H = box.clientHeight;
+      measureAnchors();
       let dpr = Math.min(2, window.devicePixelRatio || 1);
       const MAX_PX = 1_600_000;
       if (W * H * dpr * dpr > MAX_PX) dpr = Math.max(1, Math.sqrt(MAX_PX / Math.max(1, W * H)));
@@ -88,6 +106,52 @@ export default function MobileBannerScene({
       }
       ctx!.restore();
     }
+    // Small container ship riding gentle waves (home banner on phones).
+    function ship(x: number, y: number, s: number, t: number) {
+      const c = ctx!;
+      const bob = reduced ? 0 : Math.sin(t * 0.0021) * 1.6;
+      const roll = reduced ? 0 : Math.sin(t * 0.0017) * 0.025;
+      // waves (drawn under and around the hull)
+      c.save(); c.lineWidth = 1.2;
+      for (let k = 0; k < 2; k++) {
+        c.strokeStyle = w(0.32 - k * 0.12); c.beginPath();
+        for (let i = -46; i <= 46; i += 2) {
+          const yy = y + 6 * s + k * 6 * s + Math.sin(i * 0.17 + (reduced ? 0 : t * 0.003) + k * 1.4) * 1.6 * s;
+          i === -46 ? c.moveTo(x + i * s, yy) : c.lineTo(x + i * s, yy);
+        }
+        c.stroke();
+      }
+      c.restore();
+      c.save(); c.translate(x, y + bob); c.rotate(roll); c.scale(s, s);
+      c.lineWidth = 1.2 / s; c.lineJoin = "round"; c.fillStyle = BG;
+      // containers (behind the hull top)
+      const cols = ["r", "w", "w", "r", "w", "r"];
+      cols.forEach((col, i) => {
+        const cx = -22 + (i % 3) * 9, cy = i < 3 ? -9 : -15;
+        if (i >= 3 && i === 5) return;
+        c.strokeStyle = col === "r" ? r(0.85) : w(0.55);
+        c.fillRect(cx, cy, 8, 6); c.strokeRect(cx, cy, 8, 6);
+      });
+      // bridge + funnel at the stern (right side, ship faces left)
+      c.strokeStyle = w(0.6);
+      c.fillRect(10, -16, 10, 13); c.strokeRect(10, -16, 10, 13);
+      c.beginPath(); c.moveTo(12, -12); c.lineTo(18, -12); c.stroke();
+      c.strokeStyle = r(0.85); c.fillRect(14, -23, 5, 7); c.strokeRect(14, -23, 5, 7);
+      // hull
+      c.strokeStyle = w(0.65);
+      c.beginPath(); c.moveTo(-34, -3); c.lineTo(26, -3); c.lineTo(22, 6); c.lineTo(-28, 6); c.closePath(); c.fill(); c.stroke();
+      c.strokeStyle = r(0.7); c.beginPath(); c.moveTo(-31, 2); c.lineTo(23.5, 2); c.stroke();
+      c.restore();
+      // smoke drifting back from the funnel
+      if (!reduced) {
+        for (let k = 0; k < 3; k++) {
+          const u = ((t * 0.0005) + k / 3) % 1;
+          c.fillStyle = w(0.18 * (1 - u));
+          c.beginPath(); c.arc(x + (16.5 + u * 22) * s, y + bob + (-25 - u * 12) * s, (2 + u * 4) * s, 0, 7); c.fill();
+        }
+      }
+    }
+
     function plane(x: number, y: number, s: number, tilt: number, a: number, trail: number) {
       ctx!.save(); ctx!.translate(x, y); ctx!.rotate(tilt); ctx!.scale(s, s);
       ctx!.lineWidth = 1.2 / s; ctx!.strokeStyle = w(a); ctx!.fillStyle = BG;
@@ -153,9 +217,17 @@ export default function MobileBannerScene({
         const tx = -60 + (W + 120) * cyc;
         truck(tx, roadY + 2, 0.95 * S, 1, t, cyc > 0.45);
         const pc = reduced ? 0.5 : ((t * 0.00005) + 0.3) % 1;
-        const px = W + 40 - (W + 120) * pc, py = H * 0.16 + Math.sin(pc * Math.PI) * -10;
+        // plane: bigger, flying in the empty band above the AEO pill (2026-10-03, per Vignesh)
+        const ps = 1.55 * S;
+        const px = W + 60 * ps - (W + 120 * ps) * pc;
+        const py = (planeY > 0 ? planeY : H * 0.06) + Math.sin(pc * Math.PI) * -6;
         ctx!.save(); ctx!.translate(px, py); ctx!.scale(-1, 1); ctx!.translate(-px, -py);
-        plane(px, py, 0.9 * S, -0.06, 0.4, 70); ctx!.restore();
+        plane(px, py, ps, -0.04, 0.5, 90); ctx!.restore();
+        // small ship sailing in place below "About Us", on the right (2026-10-03, per Vignesh)
+        if (shipX > 0 && shipY > 0 && shipY < H - 40) {
+          const drift = reduced ? 0 : Math.sin(t * 0.00035) * 10;
+          ship(shipX + drift, shipY, 1.05 * S, t);
+        }
       }
 
       if (kind === "services") {
@@ -267,8 +339,13 @@ export default function MobileBannerScene({
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
     io.observe(cv);
     resize();
+    const remeasure = window.setTimeout(() => { measureAnchors(); if (reduced) draw(4000); }, 3400); // after the hero intro has settled
+    window.addEventListener("load", measureAnchors);
     if (!reduced) raf = requestAnimationFrame(loop);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
+    return () => {
+      cancelAnimationFrame(raf); ro.disconnect(); io.disconnect();
+      window.clearTimeout(remeasure); window.removeEventListener("load", measureAnchors);
+    };
   }, [kind, fill]);
 
   return (

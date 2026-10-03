@@ -65,7 +65,7 @@ export default function Home() {
                 invisible line, the title gains its soft shadow, then the
                 line, buttons and stats fade up in turn and the stats count
                 up. CSS classes live in globals.css (.tp-*). */}
-            <span className="tp-fade-x inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand backdrop-blur-sm">
+            <span data-mb-plane-anchor className="tp-fade-x inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-brand" />
               AEO-Certified Freight &amp; Logistics
             </span>
@@ -95,7 +95,7 @@ export default function Home() {
               We&apos;ve mastered the art of navigating the complex and dynamic world of{" "}
               <span className="tp-key">global logistics.</span>
             </p>
-            <div className="tp-fade mt-9 flex flex-wrap gap-4" style={{ ["--tp-delay" as string]: "1750ms" }}>
+            <div data-mb-ship-anchor className="tp-fade mt-9 flex flex-wrap gap-4" style={{ ["--tp-delay" as string]: "1750ms" }}>
               <Link
                 href="/services"
                 className="btn-glint rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-8px_rgba(255,49,49,0.42)] transition-all hover:-translate-y-0.5 hover:bg-brand/90"
