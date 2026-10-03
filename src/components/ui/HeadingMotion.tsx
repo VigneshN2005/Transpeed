@@ -66,7 +66,9 @@ export default function HeadingMotion() {
   useEffect(() => {
     // Skip the (privately addressed) admin pages, which mark themselves
     // with data-admin-area instead of being identified by their URL.
-    if (document.querySelector("[data-admin-area]")) return;
+    const isAdmin = !!document.querySelector("[data-admin-area]");
+    document.documentElement.classList.toggle("tp-admin", isAdmin);
+    if (isAdmin) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let io: IntersectionObserver | null = null;
     const timers: number[] = [];

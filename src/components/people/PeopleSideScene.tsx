@@ -42,7 +42,7 @@ export default function PeopleSideScene({ targetId }: { targetId: string }) {
     if (!ctx) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let W = 0, H = 0, gw = 0, dpr = 1, raf = 0, last = 0;
+    let W = 0, H = 0, gw = 0, dpr = 1, raf = 0, idle = 0, last = 0;
     let scrollS = window.scrollY, lastS = window.scrollY, vel = 0, vis = 0;
     let planes: Plane[] = [];
 
@@ -115,6 +115,13 @@ export default function PeopleSideScene({ targetId }: { targetId: string }) {
     }
 
     const loop = (t: number) => {
+      // Desktop-only scene: on phones/tablets (below lg) the canvas is hidden,
+      // so don't run the per-frame work at all; just check back now and then
+      // in case the window is widened (2026-10-03 mobile performance fix).
+      if (window.innerWidth < 1024) {
+        idle = window.setTimeout(() => (raf = requestAnimationFrame(loop)), 1000);
+        return;
+      }
       const dt = last ? Math.min(64, t - last) : 16;
       last = t;
       const k = reduced ? 1 : 1 - Math.exp(-dt / 180);
@@ -163,6 +170,7 @@ export default function PeopleSideScene({ targetId }: { targetId: string }) {
     raf = requestAnimationFrame(loop);
     return () => {
       cancelAnimationFrame(raf);
+      window.clearTimeout(idle);
       window.removeEventListener("resize", resize);
     };
   }, [targetId]);

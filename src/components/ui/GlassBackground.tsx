@@ -161,7 +161,7 @@ export default function GlassBackground({ page, canvas = "#303030" }: { page?: P
   void BigGlyph;
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden" style={{ backgroundColor: canvas }} aria-hidden="true">
+    <div className="tp-glassbg fixed inset-0 -z-10 overflow-hidden" style={{ backgroundColor: canvas }} aria-hidden="true">
       {/* Ambient red cut to 70% site-wide (2026-10-02, Vignesh: "slightly
           reduce the redness in the entire website") -- every page-glow,
           box-glow and red-tinted shadow alpha scaled x0.7 in one pass; brand

@@ -360,8 +360,8 @@ body {
 /* Admin pages (private address, see middleware.ts) show only their own
    tools: the public menu and footer are hidden there. They mark themselves
    with [data-admin-area], so no admin URL appears in public code. */
-body:has([data-admin-area]) > header,
-body:has([data-admin-area]) > footer {
+html.tp-admin body > header,
+html.tp-admin body > footer {
   display: none;
 }
 
@@ -372,4 +372,23 @@ body:has([data-admin-area]) > footer {
 @keyframes tp-quote-in { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
 @media (prefers-reduced-motion: reduce) {
   .tp-quote-backdrop, .tp-quote-panel { animation: none !important; }
+}
+
+/* ------------------------------------------------------------------
+   Phone/tablet performance (2026-10-03, per Vignesh: "in the mobile the
+   website is hanging"). Below lg:
+   - no backdrop blur on the glass boxes: re-blurring the page behind 14
+     large boxes on every scroll frame is what stalls phone GPUs. The boxes
+     keep their tinted glass colour, so they look nearly the same.
+   - the fixed background glows drop their extra blur filter (they are soft
+     radial gradients already), so the layer under everything is cheap.
+   ------------------------------------------------------------------ */
+@media (max-width: 1023px) {
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .tp-glassbg > * {
+    filter: none !important;
+  }
 }

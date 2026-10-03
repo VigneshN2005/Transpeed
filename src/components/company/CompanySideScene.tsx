@@ -100,7 +100,7 @@ export default function CompanySideScene({
       "PEOPLE", "AEO CERTIFIED", "INNOVATION", "GLOBAL NETWORK",
     ];
 
-    let W = 0, H = 0, gw = 0, dpr = 1, raf = 0;
+    let W = 0, H = 0, gw = 0, dpr = 1, raf = 0, idle = 0;
     let wordCache: { font: string; items: { w: string; at: number; tw: number }[]; total: number } | null = null;
 
     const resize = () => {
@@ -331,6 +331,13 @@ export default function CompanySideScene({
     }
 
     const loop = (t: number) => {
+      // Desktop-only scene: on phones/tablets (below lg) the canvas is hidden,
+      // so don't run the per-frame work at all; just check back now and then
+      // in case the window is widened (2026-10-03 mobile performance fix).
+      if (window.innerWidth < 1024) {
+        idle = window.setTimeout(() => (raf = requestAnimationFrame(loop)), 1000);
+        return;
+      }
       const dt = lastT ? Math.min(64, t - lastT) : 16;
       lastT = t;
       ctx.clearRect(0, 0, W, H);
@@ -385,6 +392,7 @@ export default function CompanySideScene({
     raf = requestAnimationFrame(loop);
     return () => {
       cancelAnimationFrame(raf);
+      window.clearTimeout(idle);
       window.removeEventListener("resize", resize);
     };
   }, [targetId, globeUntilId, growthFromId]);
