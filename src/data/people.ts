@@ -114,7 +114,10 @@ export const people: TeamMember[] = [
     ],
     leadershipNote:
       "Her decades of experience within one of the country's most respected financial institutions have equipped her with deep insight into governance, compliance, and organisational discipline, qualities she now brings to Transpeed Logistics as Co-Founder, helping shape the company's foundation with the same rigour and dedication that defined her career at the RBI.",
-    photo: "/images/people/sandhya-rao.jpg",
+    // Enhanced 2x version (2026-10-03, per Vignesh): Real-ESRGAN upscale
+    // blended with the original's texture for a natural face, new filename
+    // so browsers and Next's image cache pick it up straight away.
+    photo: "/images/people/sandhya-rao-v2.jpg",
   },
   // Added 2026-09-21, per Vignesh, with real copy and photo supplied
   // directly (not from Gokul's docx). Em-dashes in the supplied text
