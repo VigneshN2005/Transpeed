@@ -52,6 +52,7 @@ export default function MobileBannerScene({
     // (the AEO pill above which the plane flies, the buttons row the ship
     // sits below), measured relative to this box.
     let planeY = -1, shipX = -1, shipY = -1;
+    let shipT = -1; // when the ship starts sailing in (ms since start); -1 = not yet
     const measureAnchors = () => {
       if (kind !== "home") return;
       const host = box.parentElement;
@@ -224,9 +225,14 @@ export default function MobileBannerScene({
         ctx!.save(); ctx!.translate(px, py); ctx!.scale(-1, 1); ctx!.translate(-px, -py);
         plane(px, py, ps, -0.04, 0.5, 90); ctx!.restore();
         // small ship sailing in place below "About Us", on the right (2026-10-03, per Vignesh)
-        if (shipX > 0 && shipY > 0 && shipY < H - 40) {
-          const drift = reduced ? 0 : Math.sin(t * 0.00035) * 10;
-          ship(shipX + drift, shipY, 1.05 * S, t);
+        // It waits until "About Us" has appeared, then sails in from the
+        // right edge and eases to a stop before bobbing in place (2026-10-03).
+        if (shipT >= 0 && shipX > 0 && shipY > 0 && shipY < H - 40) {
+          const u = reduced ? 1 : clamp01((t - shipT) / 2600);
+          const arrive = 1 - Math.pow(1 - u, 3);
+          const startX = W + 70;
+          const drift = reduced ? 0 : Math.sin((t - shipT) * 0.00035) * 10 * arrive;
+          ship(startX + (shipX - startX) * arrive + drift, shipY, 1.05 * S, t);
         }
       }
 
@@ -339,7 +345,13 @@ export default function MobileBannerScene({
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
     io.observe(cv);
     resize();
-    const remeasure = window.setTimeout(() => { measureAnchors(); if (reduced) draw(4000); }, 3400); // after the hero intro has settled
+    // After the hero intro (the buttons finish fading in at ~3s): take the
+    // final positions, then let the ship sail in.
+    const remeasure = window.setTimeout(() => {
+      measureAnchors();
+      shipT = Math.max(0, performance.now() - t0);
+      if (reduced) draw(4000);
+    }, 3200);
     window.addEventListener("load", measureAnchors);
     if (!reduced) raf = requestAnimationFrame(loop);
     return () => {
