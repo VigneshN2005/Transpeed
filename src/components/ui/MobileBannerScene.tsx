@@ -38,20 +38,27 @@ export default function MobileBannerScene({
   fill?: string;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const cv = ref.current;
-    if (!cv) return;
+    const box = boxRef.current;
+    if (!cv || !box) return;
     const ctx = cv.getContext("2d");
     if (!ctx) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const BG = fill;
     let W = 0, H = 0, raf = 0, visible = true, t0 = performance.now();
 
+    // Size from the wrapper box (a fixed CSS size), never from the canvas
+    // itself: measuring the canvas fed its own pixel size back into its
+    // layout size, so it grew on every resize until the phone ran out of
+    // graphics memory (2026-10-03 fix). Pixel budget capped as well.
     const resize = () => {
-      const r = cv.getBoundingClientRect();
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      W = r.width; H = r.height;
+      W = box.clientWidth; H = box.clientHeight;
+      let dpr = Math.min(2, window.devicePixelRatio || 1);
+      const MAX_PX = 1_600_000;
+      if (W * H * dpr * dpr > MAX_PX) dpr = Math.max(1, Math.sqrt(MAX_PX / Math.max(1, W * H)));
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (reduced) draw(4000);
@@ -256,7 +263,7 @@ export default function MobileBannerScene({
       raf = requestAnimationFrame(loop);
     };
     const ro = new ResizeObserver(resize);
-    ro.observe(cv);
+    ro.observe(box);
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
     io.observe(cv);
     resize();
@@ -264,5 +271,9 @@ export default function MobileBannerScene({
     return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
   }, [kind, fill]);
 
-  return <canvas ref={ref} aria-hidden="true" className={`pointer-events-none lg:hidden ${className}`} />;
+  return (
+    <div ref={boxRef} aria-hidden="true" className={`pointer-events-none overflow-hidden lg:hidden ${className}`}>
+      <canvas ref={ref} className="block h-full w-full" />
+    </div>
+  );
 }

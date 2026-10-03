@@ -391,4 +391,18 @@ html.tp-admin body > footer {
   .tp-glassbg > * {
     filter: none !important;
   }
+  /* decorative blurred glow circles inside boxes: each one is a big
+     blurred layer on a phone, so skip them there */
+  .pointer-events-none.blur-3xl,
+  .pointer-events-none.blur-2xl {
+    display: none !important;
+  }
+  /* lighter heading shadows on phones (smaller blur = far less to paint) */
+  .tp-heading {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 3px 8px rgba(0, 0, 0, 0.25);
+  }
+  .tp-title {
+    animation: none !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
 }
